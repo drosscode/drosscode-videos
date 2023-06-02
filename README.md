@@ -1,2 +1,2 @@
 # video-codes
-Repository for storing code made in the videos
+Repository for code featured in DrossCode videos
