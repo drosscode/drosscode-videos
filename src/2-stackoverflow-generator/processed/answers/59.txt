@@ -1,0 +1,10 @@
+I guess it depends on what mechanism you are using to do your database inserts e.g. parameterized SQL, stored procedure, etc. If using parameterized SQL, I think your current solution is fine, although if the database table field for date allows nulls, I don&#39;t think it is necessary to pass a value for the date column in the INSERT statement if the date field is blank. If using a stored procedure, you could set the date as an [optional parameter][1] with a NULL default value.
+
+BTW, are you using the asp.net ajax mechanism for parsing dates in JSON? e.g.
+
+    \/Date(1169125740)\/
+
+    //1169125740 is the number of milliseconds since UTC (Midnight January 1, 1970)
+
+
+  [1]: http://msdn.microsoft.com/en-us/library/ms187926.aspx

@@ -1,0 +1,14 @@
+Hi I've got a DIV section that has only its title visible initially. What I would like to achieve is that when the visitor clicks anywhere on the area of `toggle_section` the `toggle_stuff` div toggles between visible/hidden.
+
+    <div id="toggle_section" 
+         onclick="javascript: new Effect.toggle('toggle_stuff', 'slide');">
+        <div id="toggle_title">Some title</div>
+        <div id="toggle_stuff">
+            some content stuff
+            <a href="/foo.php">Some link</a>
+        </div>
+    </div>
+
+However, the way it is set-up right now, if I have any `<a>` link within the `toggle_section`, clicking that link will also execute the onclick event.
+
+Then my question is what would be the best way to set this type of behavior?

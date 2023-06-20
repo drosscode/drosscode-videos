@@ -1,0 +1,8 @@
+Google adsense ticks for the page whenever its javascript executed, After postback, the HTML from the server is reloaded into the browser, this triggers Google adsense javascript execution, therefore, It ticks again for your page.
+
+However, In Google analytics reports eliminate this by filtering out the duplicated page views. You&#39;d see unique visitors, unique pages views etc. I suppose adsense uses the same techniques.
+(**Update**: Sorry I mixed google adsense with google analytics. Not sure if this works the same way for adsense.)
+
+Since the google analytics code snippet runs on the client, it will be executed every time a page is displayed in a browser, even if this was caused by a postback.
+
+You could change this behavior by only including the google analytics code snippets if the current request is not a postback. For example, you could put the google code snippet into a user control and set the control&#39;s Visible property to false in the case of a postback.

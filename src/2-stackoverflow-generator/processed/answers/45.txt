@@ -1,0 +1,6 @@
+It would be a good thing to &quot;rate&quot; how often each feed actually changes so if something has an average time of 24 hours per change, then you just fetch is every 12 hours.
+
+Just store #changes and #try&#39;s and pick the ones you need to check... you can run the script every minute and let some statistics do the rest!
+On a shared host you might also run into script run time issues. For instance, if your script runs longer than 30 seconds the server may terminate. If this is the case for your host, you might want to do some tests/logging of how long it takes to process each feed and take that into consideration when you figure out how many feeds you should process at the same time.
+
+Another thing I had to do to help fix this was mark the &quot;last scan&quot; as updated **before** I processed each individual request so that a problem feed would not continue to fail and be picked up for each cron run. If desired, you can update the entry again on failure and specify a reason (if known) why the failure occurred.

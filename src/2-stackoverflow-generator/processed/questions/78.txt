@@ -1,0 +1,17 @@
+On a program of me, the [splint][1] checker warns:
+
+    expat-test.c:23:1: Function exported but not used outside expat-test: start
+      A declaration is exported, but not used outside this module. Declaration can
+      use static qualifier. (Use -exportlocal to inhibit warning)
+       expat-test.c:38:1: Definition of start
+
+The start() function **is** used. The program uses the [expat][2] XML parser which works with callbacks. You give the parser a function:
+
+	XML_SetElementHandler(parser, start, end);
+
+and the parser calls it back at some points. This is a very common idiom in C and I wonder why splint complains. I find nothing in the [FAQ][3] or in the [manual][4].
+
+[1]: http://www.splint.org/
+[2]: http://expat.sourceforge.net/
+[3]: http://www.splint.org/faq.html
+[4]: http://www.splint.org/manual/html/sec8.html

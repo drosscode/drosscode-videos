@@ -1,0 +1,8 @@
+Well, my question is simple. 
+
+Does the ID affect the position of a webpage on Google ? 
+I have links like this 
+`http://example.com/news/title-slug/15/` 
+and people say to me that I should remove the ID from the URL. 
+
+And I belive that is not true. By my logic, you can't depend on the title's slug. I know it should work perfectly fine if there aren't two pages that have the same title, but why should I remove the ID if there is no harm when it's there. 

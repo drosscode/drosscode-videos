@@ -1,0 +1,7 @@
+Hi i'v look through the WMI class... but none can help me in getting the partition table information... now i'm having a project which is to display the USB thumbdrive's .MBR how should i go about it? really puzzle... Any help and guide will be very much appreciated!
+
+p.s. the code can only be written in C#
+
+**Edit**
+
+Thank you! I've browse through the CreateFile documentation... Still wondering how should I use P/Invoke to call CreateFile and to read the boot sector( display out the .MBR )? Do you have any reference code for this portion? Thank you once again!!

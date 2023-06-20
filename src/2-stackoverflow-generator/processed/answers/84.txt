@@ -1,0 +1,38 @@
+Windbg can certainly meet your goal to see the assembly instructions.
+
+Open the disassembly window with View-&gt;Disassembly.
+
+**Note**: Windbg has 2 modes &quot;*source mode on*&quot; and &quot;*source mode off*&quot;, so by default you can work only with the functions you have source for.  Look for the toolbar icons:
+
+[![alt text][1]][1]
+&lt;!-- source: http://i49.tinypic.com/bjdb1x.jpg --&gt;
+
+Or set with the windbg commands `l+t` or `l-t`.
+
+Your example shows you are using a symbol server, but for benefit of others, one starting point is with the MS and Firefox public symbol servers:
+
+    srv*c:\Symbols*http://msdl.microsoft.com/download/symbols;srv*c:\Symbols*http://symbols.mozilla.org/firefox
+
+
+  [1]: https://i.stack.imgur.com/qTqAU.png
+If by &quot;Graphical Debugger&quot;, you mean it will show you the assembly code, then WinDBG is what you are actually looking for.  You just need to know where to find the things you are looking for:
+
+* **alt-6** Call Stack
+* **alt-7** Disassembly
+
+If you open the *Window* menu, you can select *Automatically Open Disassembly*.  That will cause the *Disassembly* for a particular stack frame to be opened when you click it in the *Call Stack* window.
+
+Admittedly, WinDBG doesn&#39;t have all those pretty colors the others have, but it is exteremely functional.
+The [Visual Studio C++ Express][1] addition supports both managed (.Net) and native (Win32) debugging. It has support for symbol server.
+ 
+
+
+  [1]: http://www.microsoft.com/express/vc/ 
+Well, compared to cdb, WinDbg is a graphical debugger, albeit not the most friendly one in the world!
+
+Visual Studio Pro is certainly a graphical debugger and supports symbol server, so you could try Visual Studio C++ Express.
+Check out IDA Pro:  [http://www.hex-rays.com/idapro/][1]
+
+It is both a disassembler and debugger and supports symbols.
+
+  [1]: http://www.hex-rays.com/idapro/

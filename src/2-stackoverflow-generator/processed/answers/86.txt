@@ -1,0 +1,52 @@
+Use either multiple forms (django.forms.Form not the &lt;form&gt; tag)
+
+    class Foo(forms.Form):
+        field = forms.Charfield()
+    
+    forms = [Foo(prefix=i) for i in xrange(x)]
+
+or add multiple fields to the form dynamically using self.fields.
+
+
+    class Bar(forms.Form):
+        def __init__(self, fields, *args, **kwargs):
+            super(Bar, self).__init__(*args, **kwargs)
+            for i in xrange(fields):
+                self.fields[&#39;my_field_%i&#39; % i] = forms.Charfield()
+If you run
+
+    python manage.py shell
+
+and type:
+
+    from app.forms import PictureForm
+    p = PictureForm()
+    p.fields
+    type(p.fields)
+
+you&#39;ll see that p.fields is a SortedDict. you just have to insert a new field. Something like
+
+    p.fields.insert(len(p.fields)-2, &#39;fieldname&#39;, Field())
+
+In this case it would insert before the last field, a new field. You should now adapt to your code.
+
+Other alternative is to make a for/while loop in your template and do the form in HTML, but django forms rock for some reason, right?
+
+
+
+Yes, it&#39;s possible to create forms dynamically in Django.  You can even mix and match dynamic fields with normal fields.
+
+    class EligibilityForm(forms.Form):
+        def __init__(self, *args, **kwargs):
+            super(EligibilityForm, self).__init__(*args, **kwargs)
+            # dynamic fields here ...
+            self.fields[&#39;plan_id&#39;] = CharField()
+        # normal fields here ...
+        date_requested = DateField()
+
+For a better elaboration of this technique, see James Bennett&#39;s article: **So you want a dynamic form?**
+
+[http://www.b-list.org/weblog/2008/nov/09/dynamic-forms/][1]
+
+
+  [1]: http://www.b-list.org/weblog/2008/nov/09/dynamic-forms/

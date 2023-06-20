@@ -1,0 +1,20 @@
+You can always pass in a value indicating what mode you&#39;re in or what privileges you have:
+
+    ViewData.Model.CanEdit
+
+So you might want to create a composite class for your model instead of just using Product
+
+    public class ProductViewData
+    {
+        public Product Product {get; set;}
+        public bool CanEdit {get; set;}
+    }
+
+
+
+Using [MvcContrib.FluentHtml][1] you can do like this (enhancing Todd Smith&#39;s suggestion):
+
+    &lt;%=this.TextBox(x =&gt; x.Name).Size(50).Disabled(ViewData.Model.CanEdit)%&gt;
+
+
+  [1]: http://www.codeplex.com/MVCContrib

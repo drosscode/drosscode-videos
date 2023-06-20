@@ -1,0 +1,80 @@
+On apache servers mod_rewrite is the most common for this, it&#39;s an apache mod which allows you to rewrite request urls to other urls with regular expressions, so for your example something like this would be used:
+
+&lt;pre&gt;
+RewriteEngine ON
+RewriteRule ^articles/(.*) articles.php?article=$1 [L]
+RewriteRule ^galleries/(\d*) galleries.php?gallerie=$1 [L]
+&lt;/pre&gt;
+
+This costs hardly any time, and in practice is just as fast as having the url:  
+www.mysite.com/galleries.php?gallerie=575 but looks way better
+I have used this method preiously - you just need to add the file extensions that should not be redirected in the regex and then everything else is handled by php so you don&#39;t need to be going into your .htacces file
+
+[suceed with urls][1]
+
+
+  [1]: http://www.alistapart.com/articles/succeed/
+A very simple way is to have a CGI parse the PATH_INFO portion of the URL.
+In your example:
+
+
+    http://www.example.com/articles/12345 (where &quot;articles&quot; is a CGI script)
+                           ^CGI^   ^^^^^^PATH_INFO
+
+Every thing after the script name is passed to the script in the PATH_INFO CGI header.
+
+Then you can do a database lookup or whatever you wish to generate the page.
+
+Use caution when accessing this value as the IIS server and Apache server put different portions of the URL in PATH_INFO. (IIRC: IIS __incorrectly__ uses the entire URL and Apache prunes it as stated above.)
+Firstly, when comparing /plain/ URL rewriting at the application level to using /plain/ CGI (CGI can be PHP, ISAPI, ASP.NET, etc.) with serving static pages, serving static files will always, always win. There is simply less work. For example, in Windows and Linux (that I know of) there are even enhancements in the kernel for serving static files on a local drive via HTTP. To further make the point I even found a benchmark using several servers and OSs: [http://www.litespeedtech.com/web-server-performance-comparison-litespeed-2.0-vs.html#RESULT][1] Note that serving static files is dramatically faster than using any type of CGI
+
+However, there can potentially be performance and scalability gains by using rewritten URLs effectively and it is done with caching. If you return proper cache headers (see [cache-control directive in HTTP documentation][2]) then it enables downstream servers to cache the data so you won&#39;t even get hits on your site. However, I guess you could get the same benefit with static pages :) I just happen to read an article on this very topic a day or two ago at the High Scalability blog: [http://highscalability.com/strategy-understanding-your-data-leads-best-scalability-solutions][3]
+
+
+  [1]: http://www.litespeedtech.com/web-server-performance-comparison-litespeed-2.0-vs.html#RESULT
+  [2]: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9
+  [3]: http://highscalability.com/strategy-understanding-your-data-leads-best-scalability-solutions
+It is possible to rewrite at 
+
+1. The server level in either the .htaccess file or the httpd.conf or vhosts.conf file. This is typically faster than the next level of rewriting which is done on the application level. 
+
+2. The application level (in this instance with PHP). You can write custom redirects that analyse the URL and redirect in some way based on that. Modern web frameworks such as the Zend Framework (ZF) use routes to control URL rewriting. The following is an example of a static route with ZF
+
+$route = new Zend_Controller_Router_Route_Static(&#39;latest/news/this/week&#39;, 
+array(&#39;controller&#39; =&gt; &#39;news&#39;));
+
+Which would redirect any request from http://somedomain.com/lastest/news/this/week to the news controller. 
+
+An example of a dynamic route would be 
+
+$route = new Zend_Controller_Router_Route(&#39;galleries/:id&#39;, array(&#39;controller&#39; =&gt; &#39;gallery&#39;));
+
+Where the variable $id would be availbe to that controller (and using our example above would be 575)
+
+These are very useful tools to that allow you to develop an application and retrospectively change the URL to anything you want. 
+
+
+A rewrite engine is the best approach as they are fast and optimised. Allowing your Server-Side scripting to use just plain local vars.
+
+Apaches mod_rewrite is the most common.
+In my case, I stick to the web framework with this feature already built-in. (CodeIgniter)
+
+&gt; ... As well, if the pages are all staticly
+&gt; built (hende the custom URL) then that
+&gt; means all components of the page are
+&gt; static as well... (which would be bad)
+
+... yes, this is very bad indeed. :o
+It&#39;s usually done via [a rewrite engine][1], either in the server (via something like mod_rewrite in Apache) or in the web application (all requests are routed to the web application, which looks for a route for the path specified).
+
+
+  [1]: http://en.wikipedia.org/wiki/Rewrite_engine
+There are many ways you can handle the above. Generally speaking, there is always at least some form of redirection involved - although that could be at the .htaccess level rather than php. Here&#39;s a scenario:
+
+ 1. Use .htaccess to redirect to your php processing script.
+
+ 2. Parse the uri ($_SERVER[&#39;REQUEST_URI&#39;]) and ascertain the type of content (for instance, articles or galleries as per your examples).
+
+ 3. Use the provided id (generally appended to the end of the uri, again as in your examples) to obtain the correct data - be that by serving a static file or querying a database for the requested content.
+
+This method is a very popular way of increasing SEO, but as you rightly highlight there can be difficulties in taking this approach - not typically performance, but it can make development or administration more troublesome (the later if your implementation is not well thought out and scalable).

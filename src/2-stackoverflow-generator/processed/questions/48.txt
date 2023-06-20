@@ -1,0 +1,13 @@
+I am current writing an application and need to show the current days of the week.
+
+So, for the coming week I need to generate the follow dates.
+
+Monday, 5 January 2009
+Tuesday, 6 January 2009
+Wednesday, 7 January 2009
+Thursday, 8 January 2009
+Friday, 9 January 2009
+
+I have already coded the application to generate five dates from the current date. The problem I have is finding a method to create Monday through to Friday on the current week.
+
+I am running OS X 10.5 and am using the Cocoa environment.

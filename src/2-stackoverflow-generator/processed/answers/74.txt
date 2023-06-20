@@ -1,0 +1,73 @@
+Try this instead:
+
+    $.fn.tagName = function() {
+        return this.get(0).tagName;
+    }
+    alert($(&#39;#testElement&#39;).tagName());
+
+To explain a little bit more of why your original example didn&#39;t work, the `each()` method  will always return the original jQuery object (unless the jQuery object itself was modified). To see what is happening in each with your code, here is some pseudocode that shows how the `each()` method works:
+
+    function each(action) {
+        for(var e in jQueryElements) {
+            action();
+        }
+        return jQueryObject;
+    }
+
+This is not how `each()` really gets implemented (by a long shot probably), but it is to show that the return value of your `action()` function is ignored.
+Why create a plugin at all? Seems a bit unnecessary...
+
+    alert( $(&#39;div&#39;)[0].tagName );
+This one will return the lower case tagname of the matched element.
+
+for example, 
+
+    jQuery(&quot;#test_div&quot;).tagName();
+
+would return `div` (assuming that element was a div).
+
+If you pass an element collection, it returns an array of all the tagnames, where each array entry corresponds to the matched element.
+
+for example if we run
+
+    jQuery(&quot;.classname&quot;).tagName();
+
+on the following (X)HTML:
+
+    &lt;div&gt;
+	&lt;p class=&quot;classname&quot;&gt;test text&lt;/p&gt;
+	&lt;div class=&quot;anotherClass&quot;&gt;
+		&lt;ul&gt;
+			&lt;li class=&quot;classname&quot;&gt;&lt;a href=&quot;test&quot;&gt;Test link&lt;/a&gt;&lt;/li&gt;
+		&lt;/ul&gt;
+		&lt;p class=&quot;classname&quot;&gt;Some more text&lt;/p&gt;
+	&lt;/div&gt;
+    &lt;div&gt;
+
+would an array of tagnames:
+
+    [&quot;p&quot;, &quot;li&quot;, &quot;p&quot;]
+
+
+This is the function - it&#39;s basically the same as above but it supports multiple elements, which may or may not be useful to your project.
+
+    jQuery.fn.tagName = function(){
+		if(1 === this.length){
+			return this[0].tagName.toLowerCase();
+		} else{
+			var tagNames = [];
+			this.each(function(i, el){
+				tagNames[i] = el.tagName.toLowerCase();
+			});
+			return tagNames;
+		}
+	};
+You may wish to add a toLowerCase() to make it more consistent (and XHTML compliant).
+
+    $.fn.tagName = function() {
+        return this.get(0).tagName.toLowerCase();
+    }
+    
+    alert($(&#39;#testElement&#39;).tagName());
+
+

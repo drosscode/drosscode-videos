@@ -1,0 +1,20 @@
+Yes, you can use [mprotect][1].
+
+Yes, a write to protected memory will raise a segfault.  You can install a handler, e.g. in C++:
+
+    std::signal(SIGSEGV, my_segv_handler_func);
+
+This is a plausible way of doing what you want, although you&#39;d have to add a lot of extra management goo to make it work.  For example, this sort of write-detection is done in hardware, and on x86 architectures you&#39;ve got a page size of 4k.  So you can protect things 4k at a time, aligned on 4k boundaries -- not a generic &quot;start at address X and go N bytes&quot;.  I believe you&#39;d either have to 
+
+ 1. have a mapping of objects to pages
+    such that you can identify whether a
+    write to a page is a write to a
+    particular protected object, or
+ 2. roll your own malloc that always
+            allocates on 4k boundaries, which would force you to use a
+            minimum alloc&#39;d block size of 4k
+
+I don&#39;t know off the top of my head if there&#39;s a better way, but it sounds fun to play with.  :)
+
+
+  [1]: http://www.opengroup.org/onlinepubs/009695399/functions/mprotect.html

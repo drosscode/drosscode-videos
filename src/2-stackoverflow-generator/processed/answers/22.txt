@@ -1,0 +1,17 @@
+GSSAPI is indeed the recommended approach, but the precise details will depend on your language environment and whether you need interop with Windows. Is your kerberos provider Windows or something else? 
+
+On Windows, Kerberos is a native protocol supported by the OS, and many high level Win32 APIs will effectively give you it for free. Making it interop with a non Windows kerberos server is possible but not trivial.
+
+On UNIX, you may first need to install kerberos client support and get that working - but if your network already has a kerberos server, this may have been done for you already. 
+
+Windows includes an implementation of GSSAPI as does Java, and most UNIX flavors have an implementation. I believe GSSAPI addons are available for PHP also.
+
+If you can add more specifics on your requirements I can firm this answer up a bit.
+Have a look at Heimdal, they have an extensive kerberos API, and the site below has a great doxygen install that describes the API.
+
+http://www.h5l.org
+Sun covers this in their book [Solaris Security for Developers Guide][1]. Specifically helpful to you will probably be [Appendix A - Sample C-based GSSAPI programs][2] and [Chapter 5 - GSS-API Client Example][3].
+
+  [1]: http://www.oracle.com/pls/topic/lookup?ctx=solaris11&amp;id=GSSAPIPG
+  [2]: http://docs.oracle.com/cd/E23824_01/html/819-2145/sampleprogs-1.html#scrolltoc
+  [3]: http://docs.oracle.com/cd/E23824_01/html/819-2145/gssclient.html#scrolltoc

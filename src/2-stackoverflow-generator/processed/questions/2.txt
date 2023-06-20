@@ -1,0 +1,1 @@
+How can I run a CMD or .bat file in silent mode? I'm looking to prevent the CMD interface from being shown to the user.

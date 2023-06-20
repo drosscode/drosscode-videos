@@ -1,0 +1,15 @@
+Which one of the following do you do:
+
+    var = true;
+    if (...) var = false;
+
+Or
+
+    if (...) var = false;
+    else var = true;
+
+Is there a reason you pick on or the other?
+
+I'm working on the premise that nothing else is happening to var. The next line of code might be something like:
+
+    if (var) { ... }

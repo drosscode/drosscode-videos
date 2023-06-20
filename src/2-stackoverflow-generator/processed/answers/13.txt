@@ -1,0 +1,33 @@
+If you&#39;re prepared to parse the raw information yourself, you can use P/Invoke to call CreateFile. If your user account has enough mojo, you can open the raw disk device by passing it a string, something like `&quot;\\.\PHYSICALDRIVE0&quot;`. See the documentation for CreateFile for more details.
+Indeed C# FileStream cannot open physical device directly:
+
+&gt; Unhandled Exception: System.ArgumentException: FileStream will not
+&gt; open Win32 devices such as disk partitions and tape drives. Avoid use
+&gt; of &quot;\\.\&quot; in the path.
+If you want you can use WMI to get information about any drive. To do this you need to query the corresponding WMI classes. With C# you must add these references:
+ 
+    System.Management
+and using statements:
+
+    using System.Management;
+
+To get disk info for which are attached to your computer you can use this query:
+
+    Select * From Win32_DiskDrive
+
+with C#, you can query like:
+
+    SelectQuery wmi_sorgusu = new SelectQuery(&quot;Select * from Win32_DiskDrive&quot;);
+    ManagementObjectSearcher wmi_bulucu = new ManagementObjectSearcher( wmi_sorgusu );
+    
+    foreach (ManagementObject wmi_nesne in wmi_bulucu.Get()) {
+        Console.WriteLine(wmi_nesne.GetPropertyValue( &quot;DeviceID&quot; ).ToString());
+        Console.WriteLine(wmi_nesne.GetPropertyValue( &quot;InterfaceType&quot; ).ToString());
+        Console.WriteLine(wmi_nesne.GetPropertyValue( &quot;Caption&quot; ).ToString());
+        Console.WriteLine(wmi_nesne.GetPropertyValue( &quot;Status&quot; ).ToString());
+        Console.WriteLine(wmi_nesne.GetPropertyValue( &quot;MediaLoaded&quot; ).ToString());
+        //... etc
+    }
+
+After getting the device parameters, you can use the same method to query Win32_DiskPartition WMI Class. You can give the device parameters to SELECT query as WHERE clause. Queries to Win32_DiskPartition returns all the partitions of all drives attached to system.
+To be honest, I would be very much surprised if you can&#39;t open it with IO.FileStream with the same magic path.

@@ -1,0 +1,1 @@
+Think I stumbled on the answer.  I was naming the service reference in my web app the same as my edm, which doesn&#39;t seem to bother the console app, WinForm app, and a WPF app, but does cause the problem with the web app.  Curious.  Any insights?  

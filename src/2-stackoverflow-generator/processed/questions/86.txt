@@ -1,0 +1,46 @@
+Is it possible to have a variable number of fields using django forms?
+
+The specific application is this:
+
+A user can upload as many pictures as they want on the image upload form. Once the pictures are uploaded they are taken to a page where they can give the pictures a name and description. The number of pictures will depend on how many the user has chosen to upload.
+
+So **how do I get django to generate a form using a variable number of input fields** (which could be passed as an argument if necessary)?
+
+**edit:** a few things have changed since the [article mentioned in jeff bauer's answer][1] was written. 
+
+Namely this line of code which doesn't seem to work:
+
+<pre><code># BAD CODE DO NOT USE!!!
+return type('ContactForm', [forms.BaseForm], { 'base_fields': fields })
+</code></pre>
+
+So here is what I came up with...
+
+The Answer I used:
+==================
+
+<pre><code>
+from tagging.forms import TagField
+from django import forms
+
+def make_tagPhotos_form(photoIdList):
+	"Expects a LIST of photo objects (ie. photo_sharing.models.photo)"
+	
+	fields = {}
+	
+	for id in photoIdList:
+		id = str(id)
+
+		fields[id+'_name'] = forms.CharField()
+		fields[id+'_tags'] = TagField()
+		fields[id+'_description'] = forms.CharField(widget=forms.Textarea)
+		
+	return type('tagPhotos', (forms.BaseForm,), { 'base_fields': fields })
+
+</code></pre>
+
+note tagging is not part of django, but it is free and very useful. check it out: [django-tagging][2]
+
+
+  [1]: http://www.b-list.org/weblog/2008/nov/09/dynamic-forms/
+  [2]: http://code.google.com/p/django-tagging/

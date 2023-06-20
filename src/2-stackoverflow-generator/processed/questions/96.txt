@@ -1,0 +1,3 @@
+My application needs to execute a fairly complicated series of queries against a database.  Normally I would just dump everything into a stored procedure and execute it that way.  
+
+But I do not have access to the database I'm trying to access so I can't create a stored procedure.  Is there a better way of doing this instead of hitting the database 5-6 times to get the results that I need?  I could join everything into a single query, but I would like to avoid that if possible since I would need to join about 10 tables.

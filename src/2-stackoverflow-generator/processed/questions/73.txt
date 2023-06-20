@@ -1,0 +1,5 @@
+I am writing an academic paper and I need to refer to a feature that exists in most IDEs for OO languages, where you type an objects name in the source code, add the dot, and something pops up and lets you pick members.
+
+I am looking for a general (not IDE specific term, though I am also interested in knowing those), and that refers specifically to this functionality and popup rather than to all the support features (e.g., "Content assist" or something like that). The term should be distinguishable from the member list or outline views in most IDEs.
+
+My paper is concerned with Eclipse and Java, but I am wondering if there is a well-accepted term. 

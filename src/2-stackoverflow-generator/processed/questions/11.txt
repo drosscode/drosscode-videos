@@ -1,0 +1,1 @@
+I have a List (Foo) and I want to see if it's equal to another List (foo).  What is the fastest way ?

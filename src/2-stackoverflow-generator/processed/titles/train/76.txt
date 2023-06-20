@@ -1,0 +1,1 @@
+How do you declare and consume marker interface in f#?

@@ -1,0 +1,10 @@
+Did you go to the Data Tab.  
+Then **From Other Sources**
+and then **XML Data Import**?
+
+Use the URL of the data. I used Jon Udell&#39;s Blog feed as a [test](http://blog.jonudell.net/feed/) and it worked.
+
+If I knew of a public ADO.NET Services URL I could test it out.
+It doesn&#39;t work properly because feed web services have special xml format which is different from ATOM that is used by ado.net data services.
+check out this url for a not very well solution:
+http://geeks.netindonesia.net/blogs/andriyadi/archive/2009/07/16/oba-excel-amp-ado-net-data-services.aspx

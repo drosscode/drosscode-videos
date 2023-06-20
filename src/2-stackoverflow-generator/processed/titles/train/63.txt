@@ -1,0 +1,1 @@
+Representing u1F000 as a Java string

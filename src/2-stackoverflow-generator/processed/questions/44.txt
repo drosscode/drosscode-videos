@@ -1,0 +1,3 @@
+Is a postback (asp.net) considered as a pageview by google ads or CPM ads or it is ignored?
+
+How does google ads differentiate between a postback and a pageview?

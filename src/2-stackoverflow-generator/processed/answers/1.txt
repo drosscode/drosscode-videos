@@ -1,0 +1,21 @@
+The code sample
+
+    Shoes.app do
+      para &quot;program: #{ARGV[0]}\n&quot;
+      para &quot;arg1: #{ARGV[1]}\n&quot;
+      para &quot;arg2: #{ARGV[2]}\n&quot;
+    end
+
+works for me when called from the wrapper `shoes.run`.  For example, if I run `./shoes.run test.app foo bar` on the command line, it displays:
+
+    program: test.app
+    arg1: foo
+    arg2: bar
+
+for me.  Perhaps your concatenation behavior is related to how you are calling Shoes, and not to the Shoes wrapper itself?
+
+Also, the same works for me if I run `shoes` after unpacking everything.  Also, you can run
+
+    shoes test.app -- foo bar
+
+to insure that the app gets the arguments instead of the shoes executable.

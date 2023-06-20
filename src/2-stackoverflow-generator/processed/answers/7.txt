@@ -1,0 +1,15 @@
+You&#39;d probably be best signing in one of the better known game development groups, for example [GameDev][1] or [DevMaster][2] as well as checking out the stuff [Microsoft][3] pushes.
+
+
+  [1]: http://www.gamedev.net/
+  [2]: http://www.devmaster.net/
+  [3]: http://www.microsoft.com/express/gamedevelopment/
+I&#39;m not sure how many resources you will find for making games, as most open source games develop their own tools and commercial games keep their tools private.
+
+I think that the best strategy is to start from scratch, using existing low-level libraries.
+
+For C++, I recommend using [Box2d][1] for physics and [HGE][2] for graphics.  I have also heard that python&#39;s pygame library is good, but have not tried it myself.
+
+  [1]: http://box2d.org
+  [2]: http://hge.relishgames.com/ &quot;HGE&quot;
+I use a an editor/engine called [RPG Maker](http://www.play-asia.com/paOS-13-71-7s-49-en-15-rpg%20maker%20vx-70-2b0a.html) for fun in my spare time.  You can download the demo for free.  It is a tile based rpg engine and is pretty basic, but the engine is written in ruby and can be browsed very easily.

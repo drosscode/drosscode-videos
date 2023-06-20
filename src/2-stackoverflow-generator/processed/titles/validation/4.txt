@@ -1,0 +1,1 @@
+What are the differences between PHP and Java?

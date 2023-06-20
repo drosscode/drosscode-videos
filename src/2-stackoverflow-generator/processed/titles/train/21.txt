@@ -1,0 +1,1 @@
+How do i make ActiveRecord work on Tables with multiple columns as Primary keys?

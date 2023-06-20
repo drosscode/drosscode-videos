@@ -1,0 +1,45 @@
+i'm trying to debug a program, that i don't have the source code for: explorer.exe
+
+It's a native Win32 application from Microsoft, and symbols are avilable.
+
+All i need now is a (graphical) debugger that supports symbols.
+
+
+ - OllyDbg is a graphical debugger, but doesn't support symbols.
+ - Delphi is a graphical debugger, but doesn't support symbols.
+ - WinDbg is not a graphical debugger, which supports symbols.
+ - Visual C# Express Edition is not Win32 a debugger.
+ - Process Explorer supports symbols, but isn't a debugger
+ - Process Monitor supports symbols, but isn't a debugger
+
+
+Have any new graphical debuggers that support Microsoft's symbols server, been written in the last 6 months that i don't know about?
+
+
+----------
+
+A graphical debugger is one where you can see the disassembly, and can Step Into and Stop Over instructions, e.g.:
+
+Delphi
+
+[![alt text][1]][1]
+<!-- source: http://i41.tinypic.com/2s1t66w.jpg -->
+
+OllyDebug:
+
+[![alt text][2]][2]
+<!-- source: http://i43.tinypic.com/20py.jpg -->
+
+IDA Pro 
+
+![alt text][3]
+
+WinDbg does not show you a series of instructions:
+
+![alt text][4]
+
+
+  [1]: https://i.stack.imgur.com/HoQ6g.png
+  [2]: https://i.stack.imgur.com/oPmhJ.png
+  [3]: http://www.hex-rays.com/idapro/linux/remotedebugger2.gif
+  [4]: http://windowsitpro.com/Files/11/21217/Figure_01.gif

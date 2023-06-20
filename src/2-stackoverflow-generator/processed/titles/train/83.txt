@@ -1,0 +1,1 @@
+Best way to repeat a character in C#

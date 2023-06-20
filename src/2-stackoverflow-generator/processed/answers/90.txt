@@ -1,0 +1,41 @@
+The two major differences between 32-bit and 64-bit programming in C are `sizeof(void*)` and `sizeof(long)`.  The major problem that you will have is that the most Unix systems use the I32LP64 standard which defines a long as 64 bits and Win64 uses the IL32LLP64 standard which defines a long as 32 bits.  If you need to support cross-platform compilation, you may want to use a set of architecture based typedefs for 32-bit and 64-bit integers to ensure that all code will behave consistently.  This is provided as part of stdint.h as part of the C99 standard.  If you are not using a C99 compiler, you may need to roll your own equivalent
+
+As noted elsewhere the primary concerns for conversion will be code that assume `sizeof(int) == sizeof(long) == sizeof(void*)`, code to support data that has been written to disk and code for cross platform IPC.
+
+For a good review of the history behind this, take a look at this [article][1] from ACM Queue.
+
+
+  [1]: http://queue.acm.org/detail.cfm?id=1165766
+There are lots of good answers already.
+
+Consider using [Gimpel Lint][1].  It can point out exactly the types of constructs that are problematic.  If your experience is like mine, it will also show you lots of bugs in the system unrelated to the 32/64 bit port.
+
+  [1]: http://www.gimpel.com/
+One potential problem not already mentioned is that if your app reads or writes binary data from disk (e.g., read an array of structs using `fread`), you are going to have to check very carefully and perhaps wind up having two readers: one for legacy files and one for 64-bit files.  Or, if you are careful to use types like `uint32_t` and so on from the `&lt;stdint.h&gt;` header file, you can redefine your structs to be bit-for-bit compatible.  In any case, **binary I/O** is a thing to watch out for.
+
+1. Find out who wrote it. Are they an idiot? Are they *you* from a few years ago? Can you ask them questions? Are they familiar with the existence of multiple platforms and systems? Knowing *the mind-set of the author(s) of the program* will help you understand problems when you run into them.
+2. Get a 64-bit machine/build environment up and running.
+3. Replace long with int. Be perfectly aware that `LONG` is not `long`.
+4. Replace `(int)&amp;x` casts and typing with `intptr_t` and `(unsigned int)&amp;x` with `uintptr_t`
+5. Audit anything that relies on casting structures to `char*` to do pointer arithmetic with it.
+6. Regex search for \&lt;4\\&gt; in case you assumed `4 = sizeof(void*)`
+7. Be patient. When you find a problem, look elsewhere if the same problem exists, and wrap the solution in a macro.
+8. Try not to use `#ifdef RUN64` or anything similar. You&#39;ll regret it if 128-bit platforms ever go into vogue.
+9. Encapsulate all of your changes in terms of some centralized macros that&#39;ll hide the portability differences elsewhere in your program.
+10. Use a coverage tester to help make sure you&#39;ve covered everything (if appropriate)
+
+*EDIT* added `uintptr_t` note as suggested by comment.
+Well, fundamentally, the number of changes are fairly small, but it&#39;ll still be a major task if the application isn&#39;t carefully written to be somewhat portable to begin with.
+
+The main difference is that pointers are 64 bit wide, *but* most other datatypes are unchanged. An int is still 32 bit, and a long is probably also still 32 bit. So if your code casts between ints and pointers, that&#39;s going to break. Similarly, any struct or similar which depends on a specific offset to a member may break because other members may now be bigger, and so change the offset.
+
+Of course, your code should never rely on these tricks in the first place, so in an ideal world, this wouldn&#39;t be a problem at all, and you could simply recompile and everything would work. But you probably don&#39;t live in an ideal world... ;)
+If you used the correct types for your values - eg. `size_t`, `ptrdiff_t`, `uintptr_t`, the fixed sized int types from `stdint.h` where appropriate - and did not hardcode value sizes, your code should work out of the box.
+The main problem you face when switching to 64 bit is that the size of pointers are different (64 bit instead of 32 - duh) The size of integers and the size of longs might differ too, depending on platform.
+
+Why is this a problem? Well, it&#39;s not, unless your code assumes that sizeof(int) == sizeof(void*). This could lead to nasty pointer bugs.
+This really depends on the application and how it has been coded. Some code can just be recompiled with a 64-bit compiler and it will just work, but usually this only happens if the code has been designed with portability in mind.
+
+If the code has a lot of assumptions about the size of native types and pointers, if it has a lot of bit packing hacks or of it talks to an external process using a byte specified protocol but using some assumptions about the size of native types then it may require some, or a lot, of work to get a clean compile.
+
+Pretty much every cast and compiler warning is a red flag that needs checking out. If the code wasn&#39;t &quot;warning clean&quot; to start with then that is also a sign that a lot of work may be required.

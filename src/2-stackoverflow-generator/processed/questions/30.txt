@@ -1,0 +1,3 @@
+I'm reading some code in the [Ogre3D][1] implementation and I can't understand what a `void *` type variable means. What does a pointer to `void` mean in C++?
+
+  [1]: http://www.ogre3d.org

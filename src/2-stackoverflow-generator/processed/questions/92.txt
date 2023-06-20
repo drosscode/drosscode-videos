@@ -1,0 +1,49 @@
+I have the following Oracle function:
+
+    function get_job_no return number is
+            V_job_no number;
+          begin
+             select appwork.tlm_corphier_job.nextval into V_job_no from dual;
+             return V_job_no;
+          end get_job_no;
+
+PLEASE NOTE:  
+1) This is a FUNCTION, not a procedure   
+2) This is returning a NUMBER, not a VARCHAR  
+3) I happen to be using System.Data.OracleClient rather than Oracle.DataAccess.Client (due to another issue I was having) but a solution with either would be fine.  
+
+I am trying to call this from VB.Net using the MS enterprise library like so:
+
+    Imports Microsoft.Practices.EnterpriseLibrary.Data
+    Imports System.Data.OracleClient
+        Public Function GetNextJobNumber() As Object
+            Dim db As Database = DatabaseFactory.CreateDatabase()
+            Dim myresult As Object = Nothing
+            Using cmd As DbCommand = db.GetStoredProcCommand("CORPHIER_PKG.get_job_no")
+                Dim retval As New Data.OracleClient.OracleParameter("retval", GetType(System.Data.OracleClient.OracleNumber))
+                retval.Direction = ParameterDirection.ReturnValue
+                cmd.Parameters.Add(retval)
+                db.ExecuteNonQuery(cmd)
+                myresult = retval.Value
+            End Using
+            Return myresult
+        End Function
+
+I get the following error:
+
+System.InvalidCastException: Failed to convert parameter value from a RuntimeType to a Decimal. ---> System.InvalidCastException: Object must implement IConvertible.
+   at System.Convert.ChangeType(Object value, Type conversionType, IFormatProvider provider)
+   at System.Data.OracleClient.OracleParameter.CoerceValue(Object value, MetaType destinationType)
+   --- End of inner exception stack trace ---
+   at System.Data.OracleClient.OracleParameter.CoerceValue(Object value, MetaType destinationType)
+   at System.Data.OracleClient.OracleParameter.SetCoercedValueInternal(Object value, MetaType metaType)
+   at System.Data.OracleClient.OracleParameterBinding.PrepareForBind(OracleConnection connection, Int32& offset)
+   at System.Data.OracleClient.OracleCommand.Execute(OciStatementHandle statementHandle, CommandBehavior behavior, Boolean needRowid, OciRowidDescriptor& rowidDescriptor, ArrayList& resultParameterOrdinals)
+   at System.Data.OracleClient.OracleCommand.ExecuteNonQueryInternal(Boolean needRowid, OciRowidDescriptor& rowidDescriptor)
+   at System.Data.OracleClient.OracleCommand.ExecuteNonQuery()
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteNonQuery(DbCommand command)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteNonQuery(DbCommand command)
+
+
+
+

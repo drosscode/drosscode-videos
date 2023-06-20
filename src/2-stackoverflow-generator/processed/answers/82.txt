@@ -1,0 +1,81 @@
+I have heard this complaint a lot, and even at my company.It&#39;s just a way of working. If you&#39;re not capable of having your stuff compilable and testable at all times, you&#39;re probably working on your problems in an erratic way, and are touching too much code at once. You&#39;re a juggler. Jugglers don&#39;t program.
+
+On all my projects, we do HOURLY builds. We use Luntbuild to do that, and it will mail all project members as soon as the build fails, and will keep on mailing until the build works. Broken code does not get checked in, and when somebody breaks the build, he has to get cookies for the whole team (or other fitting &quot;humiliation&quot; :-) ).
+
+Each week we try to do an installation of the software on our testservers, so that our test department can test the software.
+
+You will see that this will result in better code, and a shippable project at almost any time during the project because:
+
+- You are forced to break down your work in smaller, easier to grok and therefore easier to code pieces, which will result in less bugs.
+- You are forced to update and check in often, which makes the project go faster because you benefit from reuse of your collegues earlier in the project.
+- The code will be cleaner because you want to be able to write a unittest for it (otherwise the &quot;coverage police&quot; will get you)
+
+I realize that this is not a real answer to the &quot;how do you keep the builds working&quot; question, I think there is not a really silver bullet answer for that. You just have to start doing it and see if it works for you. I think the larger part of the professional programmers agree that continuous integration, automated testing and daily builds are a goog thing.
+
+My current project has 2 problems, one being that the buildserver does not mail due to a network problem, and the other being that there is too much panic. This means that failin hourly builds are noticed much later, and weekly installations are not possible because of unfinished functionality. You can immediately see reflections of this problem to the project, and the motivation of team members. It&#39;s just not going &quot;smoothly&quot;. 
+
+I hope this helps. Keep them green! (the unittests, that is)
+
+edit: The &quot;pressing the button&quot; you are refering to is the &quot;single step build&quot;. It means that you have a script which does your build (or ant, or maven, or whatever), and you use that script to do the tests aswel. So when your automated buildprocess works, you know you have a shippable product. You just run the script and send the output to the customer. Our build script produce a directory structure which gets copied 1-on-1 to the CD we deliver the software with.
+In short... 
+
+Automate.
+
+Dont check it in till it&#39;s done.
+
+Yes.
+The easiest way to have daily builds is to work in streams.
+
+Have a development stream, a QA (or test) stream and finally a release stream.
+
+Build your QA and release streams whenever they change.  Build your development stream only when you need to.
+
+Now you can make major changes to your development stream and then merge them (in source control) in a few easier operations and your automatic build process kicks off.
+&gt; In a 1-man shop or even (especially)
+&gt; larger shops, how in the world can you
+&gt; maintain a daily build?
+
+How in the world can you expect to keep things together without one? The aim is that every checkin to the repository can generate a clean build. If it can&#39;t, you&#39;re not doing things properly.
+
+This is especially critical when large changes are being put into the source code repository.
+
+&gt; How can you expect the project to
+&gt; build for changes that take more than
+&gt; a day to complete?
+
+Easy, only build on the repository. Only check stuff into the repository that works.
+
+&gt; Is it a development goal to ensure the
+&gt; build works accross every single
+&gt; change?
+
+Yes, that&#39;s the aim.  As with most aspirations, it&#39;s probably not going to be met, but having it as the goal gives good feedback on what&#39;s happening to the code base.
+A daily build shouldn&#39;t require you to push a button. It should happen automatically, triggered either according to a particular time schedule or based on other events such as code check-ins.
+
+It&#39;s a good idea to have code in the main branch in a permanently build-able state. Don&#39;t check code into that branch until it works. You can work on larger changes either in your own branch or by blocking out some of your application&#39;s new logic with flags.
+
+You can deal with requirements like database schema, etc. by having your daily build script do all of the required set-up. Remember that you don&#39;t need to alter the production schema, since you won&#39;t be deploying your build every day—it should just be used for testing so that you can identify regressions as soon as possible.
+Yes, the idea of daily builds is to test that your *main branch* of code is stable, passes tests, and is ready to ship at all times.
+
+If you have a change that takes more than a single commit in your revision control system, then you should create a development branch, so you can commit freely without destabilizing the main branch.  
+
+Note that your database needs a separate test schema for each branch.  I recommend a separate database instance for each test environment anyway, so this shouldn&#39;t be a problem.
+
+Once you have finished this refactoring and updated tests, you should be able to manually validate that the code passes tests, and your daily build will not break.  
+
+Then you can merge the changes from your development branch to the main branch.
+If it builds on your machine, it should build on the server. The thing is that you just check-in when you&#39;re done with your task, or use branches, so you don&#39;t break the build.
+
+People don&#39;t do that necessarily to be able to put the product in a box at any day, sure, there may be routines that have to be done before release, but the idea is that any developer can get the latest code in the server and it will build in their machines. It is also used for automated unit testing; if the code does not compile, you can&#39;t run them.
+
+Pretty much every large software company uses daily builds (actually, several builds a day), so yeah, it is doable and a common practice.
+Check also this question:
+
+  - [Best Continuous Integration Setup for a solo developer][1]
+
+
+  [1]: https://stackoverflow.com/questions/264307
+On my current gig, we do at least a daily build of our Java EE app using CruiseControl, an Ivy repo, Ant &amp; ClearCase. We&#39;re a large team and able to afford a build team (of 3) and build servers.
+
+Yes the problems you name do happen such as mistaken DB changes, incorrect merges, broken compiles &amp; tests. But overall we would not have it any other way.
+I have used CruiseControl to implement Continues Integration which even creates new builds and deploys them on *every SVN checkin*, so the answer to that question is a definitive YES... ;)

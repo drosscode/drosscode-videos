@@ -1,0 +1,4 @@
+can anybody please, explain that what does SET IDENTITY INSERT ON AND OFF do. 
+
+Thanks,
+Chris

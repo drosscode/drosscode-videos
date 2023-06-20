@@ -1,0 +1,5 @@
+See [When does a Windows process run out of memory?][1]
+
+Long story short, you want to be checking the Private Bytes, Virtual Bytes and/or Working Set for your process(es).
+
+  [1]: https://stackoverflow.com/questions/201906/when-does-a-windows-process-run-out-of-memory

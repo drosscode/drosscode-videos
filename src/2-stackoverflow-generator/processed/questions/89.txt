@@ -1,0 +1,5 @@
+Does there exist a way to catch a write into write-protected page?
+
+I plan doing a self -like object system where you copy the object to instantiate it. (because it sounds simple and compact thing compared to the rest) Obviously, the objects created for this purpose ought be write-protected some way. I've seen there's a way to flag something write-protected from the program headers in the ELF. (RE, RWE, RW -flags)
+
+Does this provide write-protection at all? I remember it should raise a segfault, is this true? How to catch the write into a write-protected page. Is this a good way to implement what I'm wanting for and is there a better way?

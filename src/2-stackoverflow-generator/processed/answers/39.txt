@@ -1,0 +1,40 @@
+Is the field type in the database definitely a BLOB rather than a CLOB? It certainly *looks* as if it&#39;s treating it as text data instead of binary data. What does `Reader.GetFieldType(2)` return?
+
+Just as a side-issue, is the _filesize_ field really a string rather than an integer? Can you not just use `Reader.GetInt32(1)`?
+
+Finally, with your size issue - when you talk about something being &quot;more than a few KB&quot; - there&#39;s a big difference between &quot;more than a few K&quot; and &quot;big enough to overflow `int.MaxValue`&quot; (which would be 2GB). Do you have anything of a few megabytes in size?
+I created the field as a BLOB.  However, seeing the results of your suggestion of GetFieldType being a System.String, I&#39;m not sure.  I&#39;m using the SQLite Manager FireFox addon to manager, and it&#39;s reporting _content_ as a BLOB.  
+
+.NET and the SQLite manager seem to be conflicting.  I can save the file properly out of the manager so I know it&#39;s stored properly -- it&#39;s just reading it into my app.
+
+_filesize_ is a text field, it was something I just quickly added to try to debug this whole thing and I plan to change it sooner or later.
+
+The size issue is really surprising to me, but I cannot explain it (which is why I&#39;m here :)  I can&#39;t determine what the exact size limit is, but I know it will throw an error with a file that is only 34KB.  Attached below is a copy of the exception report I generate.
+
+
+
+Error Occured:  1:36 PM  1/4/2009
+HelpLink:       
+
+
+InnerException: 
+
+
+Message:        
+&#39;capacity&#39; must be greater than zero.
+Parameter name: capacity
+
+Source:         
+mscorlib
+
+StackTrace:     
+   at System.Text.StringBuilder..ctor(String value, Int32 startIndex, Int32 length, Int32 capacity)
+   at System.Text.StringBuilder..ctor(String value, Int32 capacity)
+   at System.Data.Odbc.OdbcDataReader.internalGetString(Int32 i)
+   at System.Data.Odbc.OdbcDataReader.GetValue(Int32 i, TypeMap typemap)
+   at System.Data.Odbc.OdbcDataReader.GetValue(Int32 i)
+   at System.Data.Odbc.OdbcDataReader.get_Item(String value)
+   at AppEx.Data.DatabaseHandler.SaveBinaryFile(String Key) in ...\Data\DatabaseHandler.cs:line 249
+
+TargetSite:     
+Void .ctor(System.String, Int32, Int32, Int32)

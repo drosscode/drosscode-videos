@@ -1,0 +1,5 @@
+What is the best way to test GWT code?
+
+GWTTestCase in hosted mode is too slow and none of the mocking frameworks work.
+
+Currently we are following MVC as suggested in http://robvanmaris.jteam.nl/2008/03/09/test-driven-development-for-gwt-ui-code/ and using GWTMockUtilities disarm() and restore() to mock widgets. And we havent figured out a way to test View in GWT MVC. Is there a better way to test GWT code?

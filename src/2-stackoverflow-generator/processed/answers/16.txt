@@ -1,0 +1,59 @@
+I recently had some issues doing this with a custom class:
+
+A user control had a public property which was of a custom class type. The designer by default tries to assign some value to it, so in the designer code, the line `userControlThing.CustomClassProperty = null` was being automatically added.
+
+The intent was to be able to provide the user control with a custom class at any point while running the program (to change values visible to the user). Because the `set {}` portion did not check for null values, various errors were cropping up.
+
+The solution was to change the property to a private one, and use two public methods to set and get the value. The designer will try to auto-assign properties, but leaves methods alone.
+You need to make a public property for the richtextbox, or expose some other property that does the job of setting the richtextbox text like:
+
+    private RichTextBox rtb;
+    
+    public string RichTextBoxText
+    {
+        get
+        {
+            return rtb.Text;
+        }
+        set
+        {
+            rtb.Text = value;
+        }
+    }
+Change the access modifier (&quot;Modifiers&quot;) of the RichTextBox in the property grid to Public.
+Cleanest way is to expose the desired properties as properties of your usercontrol, e.g:
+
+    class MyUserControl
+    {
+      // expose the Text of the richtext control (read-only)
+      public string TextOfRichTextBox
+      {
+        get { return richTextBox.Text; }
+      }
+      // expose the Checked Property of a checkbox (read/write)
+      public bool CheckBoxProperty
+      {
+        get { return checkBox.Checked; }
+        set { checkBox.Checked = value; }
+      }
+      
+
+      //...
+    }
+
+In this way you can control which properties you want to expose and whether they should be read/write or read-only. (of course you should use better names for the properties, depending on their meaning).
+
+Another advantage of this approach is that it hides the internal implementation of your user control. Should you ever want to exchange your richtext control with a different one, you won&#39;t break the callers/users of your control.
+Add a property to the usercontrol like this
+
+    public string TextBoxText
+    {
+        get
+        {
+            return textBox1.Text;
+        }
+        set
+        {
+            textBox1.Text = value;
+        }
+    }

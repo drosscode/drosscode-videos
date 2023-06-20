@@ -1,0 +1,49 @@
+There is also max alowed upload limit in php.ini file. It&#39;s not directly connected to MySQL but if you are using php to send data it could be your problem.
+
+    ; Maximum allowed size for uploaded files.
+    upload_max_filesize = 16M
+    
+    ; Maximum size of POST data that PHP will accept.
+    post_max_size = 16M
+
+
+I have come across this issue in the past with PHP and MySQL.
+
+I remember that my solution broke the binary up into chunks and looped over the array. First it would INSERT a new row, then it would UPDATE the row using the CONCAT statement.
+
+It was nasty, but it did the trick.
+
+Actually, in the end, we stored the binary contents on file and kept a pointer to the file in the database. It was much more efficient.
+Extending the max_allowed_packet for this reason is the result of a bad implementation.  I suggest reading [this][1] article/implementation for file storage.  You can store files of any size.
+
+
+  [1]: http://www.dreamwerx.net/phpforum/?id=1
+**Edit: my original answer is incorrect.**
+
+The version of the mysql client library php was linked against was (significantly) older than the mysql server version, which made it appear that what I wrote was true; however it now seems not to be the case. When I recompile php against the correct mysql client libraries updating the server-side variable is all that&#39;s required.
+
+I&#39;ll leave the response here because someone else may find the problem and it could well be related (as was mine) to client libraries. It&#39;s also (given the original question states v3 library and v4 server) quite possibly the answer to the original question.
+
+Run 
+
+    phpinfo()
+
+and look for &quot;Client API version&quot; in the mysql section to check the version.
+
+*-- old answer from here*
+
+The problem is that while there is a server variable &quot;max_allowed_packet&quot;, there is also one set in the client. You can set this in the mysql client using 
+
+    mysql --max_allowed_packet 
+
+or by using 
+
+    set-variable   = max-allowed-packet=64M
+
+in the [client] section of the my.cnf
+
+Unfortunately php doesn&#39;t read my.cnf and doesn&#39;t allow you to set this client-side variable either. You are therefore stuck with the compile-time limit in the php source:
+
+    ext/mysql/libmysql/net.c:ulong max_allowed_packet=16*1024*1024L;
+
+If you recompile the php module with this limit modified it should fix your problem but as others have pointed out, you should really be doing things differently.

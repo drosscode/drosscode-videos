@@ -1,0 +1,66 @@
+    from django.authx.models import User
+    model = User
+    model.objects.all()
+If you have the model name passed as a string I guess one way could be
+
+    modelname = &quot;User&quot;
+    model = globals()[modelname]
+
+But mucking about with globals() might be a bit dangerous in some contexts. So handle with care :)
+I think you&#39;re looking for this:
+
+    from django.db.models.loading import get_model
+    model = get_model(&#39;app_name&#39;, &#39;model_name&#39;)
+
+There are other methods, of course, but this is the way I&#39;d handle it if you don&#39;t know what models file you need to import into your namespace.  (Note there&#39;s really no way to safely get a model without first knowing what app it belongs to.  Look at the source code to loading.py if you want to test your luck at iterating over all the apps&#39; models.)
+
+**Update for Django 1.7+:** According to Django&#39;s [deprecation timeline](https://docs.djangoproject.com/en/dev/internals/deprecation/#deprecation-removed-in-1-9), `django.db.models.loading` has been deprecated in Django 1.7 and will be removed in Django 1.9. As pointed out in [Alasdair&#39;s answer](https://stackoverflow.com/a/28380435/996114), 
+In Django 1.7+, there is an [applications registry][1]. You can use the [`apps.get_model`][2] method to dynamically get a model:
+
+    from django.apps import apps
+    MyModel = apps.get_model(&#39;app_label&#39;, &#39;MyModel&#39;)
+
+[1]: https://docs.djangoproject.com/en/1.8/ref/applications/#module-django.apps
+[2]: https://docs.djangoproject.com/en/1.8/ref/applications/#django.apps.apps.get_model
+&gt; model = django.authx.models.User
+&gt; 
+&gt; ? Django returns an error, &quot;global
+&gt; name django is not defined.&quot;
+
+Django does not return the error.  Python does.
+
+First, you MUST import the model.  You must import it with
+
+    from django.authx.models import User
+
+Second, if you get an error that `django` is not defined, then Django is not installed correctly.  You must have Django on your `PYTHONPATH` or installed in your Python lib/site-packages.
+
+To install Django correctly, see http://docs.djangoproject.com/en/dev/intro/install/#intro-install
+Classes are &quot;first class&quot; objects in Python, meaning they can be passed around and manipulated just like all other objects.
+
+Models are classes -- you can tell from the fact that you create new models using class statements:
+
+    class Person(models.Model):
+        last_name = models.CharField(max_length=64)
+
+    class AnthropomorphicBear(models.Model):
+        last_name = models.CharField(max_length=64)
+
+Both the `Person` and `AnthropomorphicBear` identifiers are bound to Django classes, so you can pass them around. This can useful if you want to create helper functions that work at the model level (and share a common interface):
+
+    def print_obj_by_last_name(model, last_name):
+        model_name = model.__name__
+        matches = model.objects.filter(last_name=last_name).all()
+        print(&#39;{0}: {1!r}&#39;.format(model_name, matches))
+
+So `print_obj_by_last_name` will work with either the `Person` or `AnthropomorphicBear` models. Just pass the model in like so:
+
+    print_obj_by_last_name(model=Person, last_name=&#39;Dole&#39;)
+    print_obj_by_last_name(model=AnthropomorphicBear, last_name=&#39;Fozzy&#39;)
+For Django 1.7+, there is an [applications registry][1]. You can use the [`apps.get_model`][2] method to dynamically get a model.
+
+    from django.apps import apps
+    MyModel = apps.get_model(&#39;app_label&#39;, &#39;MyModel&#39;)
+
+[1]: https://docs.djangoproject.com/en/1.8/ref/applications/#module-django.apps
+[2]: https://docs.djangoproject.com/en/1.8/ref/applications/#django.apps.apps.get_model

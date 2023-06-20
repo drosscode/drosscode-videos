@@ -1,0 +1,9 @@
+i'm using this example implementation found at http://tangentsoft.net/wskfaq/examples/basics/select-server.html
+
+ This is doing most of what I need, handles connections without blocking and does all work in its thread (not creating a new thread for each connection as some examples do), but i'm worried since i've been told winsock will only support max 64 client connectios :S
+
+ Is this 64 connections true?
+
+ What other choices do I have? It would be cool to have a c++ example for a similar implementation.
+
+ Thanks

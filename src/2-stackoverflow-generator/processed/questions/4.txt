@@ -1,0 +1,3 @@
+What are the main differences between PHP and Java that someone proficient in PHP but learning Java should know about?
+
+**Edit:** I mean differences in the syntax of the languages, i.e their data types, how they handle arrays & reference variables, and so forth :)

@@ -1,0 +1,226 @@
+I think I would check each point in the matrix and figure out it&#39;s mass based on it&#39;s neighbours. The mass for points would fall with say the square of the distance. You could then pick the top four points with a minimum distance from each other.
+
+Here&#39;s some Python code I whipped together to try to illustrate the approach for finding out the mass for each point. Some setup using your example matrix:
+
+    matrix = [[1.0 if x == &quot;X&quot; else 0.0 for x in y] for y in &quot;&quot;&quot;.XX......
+    .XXX..X..
+    .....XXX.
+    ......X..
+    .XX......
+    .X.......
+    .X.......
+    ....XX...
+    ....XX...&quot;&quot;&quot;.split(&quot;\n&quot;)]
+    
+    HEIGHT = len(matrix)
+    WIDTH = len(matrix[0])
+    Y_RADIUS = HEIGHT / 2
+    X_RADIUS = WIDTH / 2
+
+To calculate the mass for a given point:
+
+    def distance(x1, y1, x2, y2):
+      &#39;Manhattan distance http://en.wikipedia.org/wiki/Manhattan_distance&#39;
+      return abs(y1 - y2) + abs(x1 - x2)
+    
+    def mass(m, x, y):
+      _mass = m[y][x]
+      for _y in range(max(0, y - Y_RADIUS), min(HEIGHT, y + Y_RADIUS)):
+        for _x in range(max(0, x - X_RADIUS), min(WIDTH, x + X_RADIUS)):
+          d = max(1, distance(x, y, _x, _y))
+          _mass += m[_y][_x] / (d * d)
+      return _mass
+
+Note: I&#39;m using [Manhattan][1] distances (a k a Cityblock, a k a Taxicab Geometry) here because I don&#39;t think the added accuracy using Euclidian distances is worth the cost of calling sqrt().
+
+Iterating through our matrix and building up a list of tuples like (x, y, mass(x,y)):
+
+    point_mass = []
+    for y in range(0, HEIGHT):
+      for x in range(0, WIDTH):
+        point_mass.append((x, y, mass(matrix, x, y)))
+    
+Sorting the list on the mass for each point:
+
+    from operator import itemgetter
+    point_mass.sort(key=itemgetter(2), reverse=True)
+
+Looking at the top 9 points in that sorted list:
+
+    (6, 2, 6.1580555555555554)
+    (2, 1, 5.4861111111111107)
+    (1, 1, 4.6736111111111107)
+    (1, 4, 4.5938888888888885)
+    (2, 0, 4.54)
+    (4, 7, 4.4480555555555554)
+    (1, 5, 4.4480555555555554)
+    (5, 7, 4.4059637188208614)
+    (4, 8, 4.3659637188208613)
+
+If we would work from highest to lowest and filter away points that are too close to already seen points we&#39;ll get (I&#39;m doing it manually since I&#39;ve run out of time now to do it in code...): 
+
+    (6, 2, 6.1580555555555554)
+    (2, 1, 5.4861111111111107)
+    (1, 4, 4.5938888888888885)
+    (4, 7, 4.4480555555555554)
+
+Which is a pretty intuitive result from just looking at your matrix (note that the coordinates are zero based when comparing with your example).
+
+
+  [1]: http://en.wikipedia.org/wiki/Manhattan_distance
+My first thought would be to first find any cell with a non-zero value. From there do some  flood-fill algorithm, and compute the center of mass of the cells found. Next zero out the found cells from the matrix, and start over from the top.
+
+This would of course not scale as well as the method from Google, that tuinstoel linked, but would be easier to implement for smaller matrices.
+
+EDIT:
+
+[Disjoint sets][1] (using path compression and union-by-rank) could be useful here. They have *O*(*&amp;alpha;*(*n*)) time complexity for union and find-set, where
+
+&gt; *&amp;alpha;*(*n*) = min { *k* : A&lt;sub&gt;*k*&lt;/sub&gt;(1) &amp;ge; *n* }.
+
+A&lt;sub&gt;*k*&lt;/sub&gt;(*n*) is the Ackerman function, so *&amp;alpha;*(*n*) will essentially be *O*(1) for any reasonable values. The only problem is that disjoint sets are a one-way mapping of item to set, but this won&#39;t matter if you are going trough all items.
+
+Here is a simple python script for demonstration:
+
+    from collections import defaultdict
+
+    class DisjointSets(object):
+        def __init__(self):
+            self.item_map = defaultdict(DisjointNode)
+
+        def add(self,item):
+            &quot;&quot;&quot;Add item to the forest.&quot;&quot;&quot;
+            # It&#39;s gets initialized to a new node when
+            # trying to access a non-existant item.
+            return self.item_map[item]
+
+        def __contains__(self,item):
+            return (item in self.item_map)
+
+        def __getitem__(self,item):
+            if item not in self:
+                raise KeyError
+            return self.item_map[item]
+
+        def __delitem__(self,item):
+            del self.item_map[item]
+
+        def __iter__(self):
+            # sort all items into real sets
+            all_sets = defaultdict(set)
+            for item,node in self.item_map.iteritems():
+                all_sets[node.find_set()].add(item)
+            return all_sets.itervalues()
+
+    class DisjointNode(object):
+        def __init__(self,parent=None,rank=0):
+            if parent is None:
+                self.parent = self
+            else:
+                self.parent = parent
+            self.rank = rank
+
+        def union(self,other):
+            &quot;&quot;&quot;Join two sets.&quot;&quot;&quot;
+            node1 = self.find_set()
+            node2 = other.find_set()
+            # union by rank
+            if node1.rank &gt; node2.rank:
+                node2.parent = node1
+            else:
+                node1.parent = node2
+                if node1.rank == node2.rank:
+                    node2.rank += 1
+            return node1
+
+        def find_set(self):
+            &quot;&quot;&quot;Finds the root node of this set.&quot;&quot;&quot;
+            node = self
+            while node is not node.parent:
+                node = node.parent
+            # path compression
+            root, node = node, self
+            while node is not node.parent:
+                node, node.parent = node.parent, root
+            return root
+
+    def find_clusters(grid):
+        disj = DisjointSets()
+        for y,row in enumerate(grid):
+            for x,cell in enumerate(row):
+                if cell:
+                    node = disj.add((x,y))
+                    for dx,dy in ((-1,0),(-1,-1),(0,-1),(1,-1)):
+                        if (x+dx,y+dy) in disj:
+                            node.union(disj[x+dx,y+dy])
+        for index,set_ in enumerate(disj):
+            sum_x, sum_y, count = 0, 0, 0
+            for x,y in set_:
+                sum_x += x
+                sum_y += y
+                count += 1
+            yield 1.0 * sum_x / count, 1.0 * sum_y / count
+
+    def main():
+        grid = [[(&#39;.&#39; != cell) for cell in row if not cell.isspace()] for row in (
+            &quot;. X X . . . . . .&quot;,
+            &quot;. X X X . . X . .&quot;,
+            &quot;. . . . . X X X .&quot;,
+            &quot;. . . . . . X . .&quot;,
+            &quot;. X X . . . . . .&quot;,
+            &quot;. X . . . . . . .&quot;,
+            &quot;. X . . . . . . .&quot;,
+            &quot;. . . . X X . . .&quot;,
+            &quot;. . . . X X . . .&quot;,
+        )]
+        coordinates = list(find_clusters(grid))
+        centers = dict(((round(x),round(y)),i) for i,(x,y) in enumerate(coordinates))
+        for y,row in enumerate(grid):
+            for x,cell in enumerate(row):
+                if (x,y) in centers:
+                    print centers[x,y]+1,
+                elif cell:
+                    print &#39;X&#39;,
+                else:
+                    print &#39;.&#39;,
+            print
+        print
+        print &#39;%4s | %7s %7s&#39; % (&#39;i&#39;,&#39;x&#39;,&#39;y&#39;)
+        print &#39;-&#39;*22
+        for i,(x,y) in enumerate(coordinates):
+            print &#39;%4d | %7.4f %7.4f&#39; % (i+1,x,y)
+
+    if __name__ == &#39;__main__&#39;:
+        main()
+
+Output:
+
+    . X X . . . . . .
+    . X 3 X . . X . .
+    . . . . . X 4 X .
+    . . . . . . X . .
+    . X X . . . . . .
+    . 2 . . . . . . .
+    . X . . . . . . .
+    . . . . X X . . .
+    . . . . X 1 . . .
+    
+       i |       x       y
+    ----------------------
+       1 |  4.5000  7.5000
+       2 |  1.2500  4.7500
+       3 |  1.8000  0.6000
+       4 |  6.0000  2.0000
+
+The point of this was to demonstrate disjoint sets. The actual algorithm in `find_clusters()` could be upgraded to something more robust.
+
+**References**
+
+* *Introduction to algorithms.* 2nd ed. Cormen et.al. 
+
+[1]: http://en.wikipedia.org/wiki/Disjoint-set_data_structure (Wikipedia: Disjoint-set data structure)
+You need a clustering algorithm, this is easy since you just have a 2 dimensional grid, and the entries are bordering each other. You can just use a [floodfill algorithm][1]. Once you have each cluster, you can find the center as in the [2D center of mass article.][2].
+
+
+  [1]: http://en.wikipedia.org/wiki/Flood_fill
+  [2]: https://stackoverflow.com/questions/408358/finding-the-center-of-mass-on-a-2d-bitmap

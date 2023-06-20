@@ -1,0 +1,3 @@
+Recently in an interview I was asked how I would approach an online chat client application.  I went through the standard "polling" solution but was cut off because the interviewer was looking for the "HTTP 1.1 keep-alive" method.  Having used HTTP for quite a while and remembering that the whole point was to be "stateless", this never occurred to me (also, not to mention that the keep-alive is not consistently implemented).
+
+My question is, is it possible for a web server to broadcast and/or send information to a client when the "keep-alive" header has been set?

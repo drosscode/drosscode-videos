@@ -1,0 +1,9 @@
+Look at [NSCalendar][2] and [NSDateComponents][3].
+
+If you haven&#39;t, you should read [Dates and Times Programming Topics for Cocoa][4] for more info/help.
+
+
+  [1]: http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSCalendarDate_Class/Reference/Reference.html
+  [2]: http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSCalendar_Class/Reference/NSCalendar.html
+  [3]: http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSDateComponents_Class/Reference/Reference.html
+  [4]: http://developer.apple.com/documentation/Cocoa/Conceptual/DatesAndTimes/DatesAndTimes.html

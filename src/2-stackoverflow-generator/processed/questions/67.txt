@@ -1,0 +1,9 @@
+Haskell is givinig me a headache today. I want to handle an exception. When it gets to the top it prints like this:
+
+*** Exception: ../p/trip/Trip.hs:(88,16)-(89,50): Non-exhaustive patterns in function split
+
+To me it looks like it is PatternMatchFail, but this doesn't work:
+
+    handle (\(PatternMatchFail _) -> return env) f
+
+I mean, it compiles, but doesn't handle the exception. What am I doing wrong? Is this the wrong exception or what? Is there a way to catch any exception?

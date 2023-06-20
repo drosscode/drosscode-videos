@@ -1,0 +1,10 @@
+Whenever I make a new file in xcode, it puts something like this at the top of the file:
+
+    //  Copyright __MyCompanyName__ 2008.  All rights reserved.
+
+How can I change that to something useful?
+
+Update: [found the answer here][1].  
+
+
+  [1]: https://stackoverflow.com/questions/33720/change-templates-in-xcode#33789

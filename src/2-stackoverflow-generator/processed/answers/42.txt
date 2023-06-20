@@ -1,0 +1,54 @@
+Concurrency can not be implemented like this, especially in a multi-processor (or multi-core) environment: different cores/processors have different caches. Those caches may not be coherent. The pseudo-code below could execute in the order shown, with the results shown:
+
+    get blocked[0] -&gt; false   // cpu 0
+    set blocked[0] = true     // cpu 1 (stored in CPU 1&#39;s L1 cache)
+    get blocked[0] -&gt; false   // cpu 0 (retrieved from CPU 0&#39;s L1 cache)
+    get glocked[0] -&gt; false   // cpu 2 (retrieved from main memory)
+
+You *need* hardware knowledge to implement concurrency.
+Maybe you need to declare blocked and turn as volatile, but without specifying the programming language there is no way to know.
+Mutual Exclusion is in this exemple not guaranteed because of the following:
+
+We begin with the following situation:
+
+    turn= 1;
+    blocked = {false, false};
+
+The execution runs as follows:
+
+    P0: while (true) {
+    P0:   blocked[0] = true;
+    P0:   while (turn != 0) {
+    P0:     while (blocked[1]) {
+    P0:     }
+    P1: while (true) {
+    P1:   blocked[1] = true;
+    P1:   while (turn != 1) {
+    P1:   }
+    P1:   criticalSection(P1);
+    P0:     turn = 0;
+    P0:   while (turn != 0)
+    P0:   }
+    P0:   critcalSection(P0);
+
+Mutual Exclusion is in this exemple not guaranteed because of the following:
+
+We begin with the following situation:
+
+    blocked = {false, false};
+    turn = 0;
+
+P1 is now executes, and skips
+
+      blocked[id] = false; // Not yet executed.
+
+The situation is now:
+
+    blocked {false, true}
+    turn = 0;
+
+Now P0 executes. It passes the second while loop, ready to execute the critical section. And when P1 executes, it sets turn to 1, and is also ready to execute the critical section.
+
+Btw, this method was originally invented by Hyman. He sent it to Communications of the Acm in 1966
+Is this homework, or some embedded platform? Is there any reason why you can&#39;t use pthreads or Win32 (as relevant) synchronisation primitives?
+Compiler might have optimized out the &quot;empty&quot; while loop.  Declaring variables as volatile might help, but is not guaranteed to be sufficient on multiprocessor systems.

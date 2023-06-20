@@ -1,0 +1,8 @@
+Only Problem is Postback is Happening Before ItemCommand Event of Repeater Could happen....i.e why asp.net is throwing a Event Validation Error
+
+If u r Binding Repeater inside Page Load Write it Inside If(!PostBack){...}
+lookout for the binding problem pointed out by Steve Robbins and you may also want to take a look at [this][1] article which I found pretty useful when I was stuck in a similar situation.
+
+
+  [1]: http://aspalliance.com/1343_Handling_Events_within_a_Repeater_Control_Using_ASPNET_20.all
+The only time I&#39;ve ever seen this is when I was rebinding the repeater in the Page_Load on postback, rather than wrapping the binding in an if (!Page.IsPostBack).  If you do this then the control that&#39;s sending the message is effectively invalid, so it fails.

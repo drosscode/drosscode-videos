@@ -1,0 +1,1 @@
+write-protected virtual pages, catch write

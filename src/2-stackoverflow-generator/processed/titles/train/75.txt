@@ -1,0 +1,1 @@
+gtk.Builder, container subclass and binding child widgets

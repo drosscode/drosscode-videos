@@ -1,0 +1,22 @@
+I am working on a small client server program to collect orders. I want to do this in a "REST(ful) way".
+
+What I want to do is:
+
+Collect all orderlines (product and quantity) and send the complete order to the server
+
+At the moment I see two options to do this:
+
+1. Send each orderline to the server: POST qty and product_id
+
+I actually don't want to do this because I want to limit the number of requests to the server so option 2:
+
+2. Collect all the orderlines and send them to the server at once.
+
+How should I implement option 2? a couple of ideas I have is:
+Wrap all orderlines in a JSON object and send this to the server or use an array to post the orderlines.
+
+Is it a good idea or good practice to implement option 2, and if so how should I do it.
+
+
+
+What is good practice? 

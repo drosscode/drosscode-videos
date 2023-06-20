@@ -1,0 +1,10 @@
+I've got a PHP script on a shared webhost that selects from ~300 'feeds' the 40 that haven't been updated in the last half hour, makes a cURL request and then delivers it to the user.
+
+    SELECT * FROM table WHERE latest_scan < NOW() - INTERVAL 30 MINUTE ORDER BY latest_scan ASC LIMIT 0, 40;
+    // Make cURL request and process it
+
+I want to be able to deliver updates as **fast as possible**, but don't want to bog down my server or the servers I'm fetching from (it's only a handful). 
+
+How often should I run the cron job, and should I limit the number of fetches per run? To how many?
+
+

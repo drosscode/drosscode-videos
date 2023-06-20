@@ -1,0 +1,9 @@
+I have a `Repeater` with a `Button` inside the `ItemTemplate`. I added the `CommandName` property to the button and registered and event handler for the `ItemCommand` event on the `Repeater`.
+
+My problem is that when I click the button, I get an `ArgumentException` with a message saying something about `EnableEventValidation` being set to `true`.
+
+(By the way, is there a way I can get the message in English, instead of a lousy Portuguese translation?)
+
+I tried setting it to `false` and the `ItemCommand` handler is not called. If I set it to `true` I get the error.
+
+The message also says something about using `ClientScriptManager.RegisterForEventValidation` if I trust the client (which I do). The problem is I can't make sense of the documentation for that method.

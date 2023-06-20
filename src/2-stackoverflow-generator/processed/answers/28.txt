@@ -1,0 +1,5 @@
+This doesn&#39;t answer my question directly, but for the project I&#39;m working on, I realized that I just didn&#39;t *need* a server side component for this *yet*.  To facilitate the client side of my web application, I just launched two new open source projects:
+
+ * [LiquidMetal](http://github.com/rmm5t/liquidmetal/tree/master): This is a Quicksilver-like scoring algorithm that scores strings against abbreviations.  Useful when building an index.
+ * [Flexselect](http://rmm5t.github.com/jquery-flexselect/): a jQuery plugin that turns select boxes into flex-matching incremental-finding controls. Think of it as Quicksilver squooshed into a select box. It uses LiquidMetal to filter and sort the live results.
+One method would be to just do LIKE matches.  Put a % in between each character, and then before and after the string, and search based on that.  Obviously, that will pull in other things for **ms** like &#39;**m**ultimedia **s**ystems&#39;, but you could probably pair that with another table that contains &#39;suggested&#39; matches, and sort by those as well.

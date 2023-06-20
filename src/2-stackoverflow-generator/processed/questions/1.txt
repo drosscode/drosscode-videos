@@ -1,0 +1,5 @@
+I am trying to use Shoes and I need to pass it command-line parameters (basically, my Shoes app will be called from another pre-existing app and this would allow me to pre-fill some parts of shoes). Should I then call it using bin/shoes wrapper?
+
+   It seems I can not pass arguments to shoes wrapper (it concatenates all parameters and tries to use the result as a script path name). And I can't seem to be able to access ARGV array.
+
+     Juraj.

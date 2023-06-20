@@ -1,0 +1,5 @@
+I tend to declare all functions which are not being exported as static. I have been taught and currently believe that it is good practice to do so. (Disclaimer: As with most things, there are numerous exceptions to this &#39;rule&#39;.)
+The &#39;static&#39; keyword effectively hides the name of a function from other translation units (.C file, usually). The code&#39;s still there, and from that C file you can get the address of the function (but not from other C files). You can then pass the address to other translation units, either by calling functions, or returning the address from a function, or by storing it in a global variable, etc.
+
+
+Do you call `XML_SetElementHandler()` in the same translation unit (normally the .c source file) in which `start()` is defined? If so, the warning might be correct: Add `static` to the function definition and check if your application still links without errors.

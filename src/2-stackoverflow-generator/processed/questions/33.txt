@@ -1,0 +1,6 @@
+I'm binding a domain objects property to the Text property of a System.Windows.Forms.Label using the `DataBindings`:
+ 
+    Label l = new Label();
+    l.DataBindings.Add(new Binding("Text",myDomainObject,"MyProperty"));
+
+However, when I change the domain object, the Label does not reflect the change. I know that for complex Controls like the DataGridView, binding can be done with a BindingSource on which I can call ResetBindings, but I couldn't find any method to update the binding in the simple case of a Label.

@@ -1,0 +1,37 @@
+I have some XML code that looks like this
+
+    <SEARCHRESULTS>
+      <FUNCTION name="BarGraph">
+        <PARAMETER name="numList"></PARAMETER>
+        <PARAMETER name="maxValue"></PARAMETER>
+        <CODE>Some code</CODE>
+      </FUNCTION>
+    </SEARCHRESULTS>
+
+And I want to extract a list of parameter names for each function, so far I've got the following xsl code
+
+    <xsl:for-each select="SEARCHRESULTS/FUNCTION">
+      <ROW>
+        <COL><DATA><xsl:value-of select="@name" /></DATA></COL>
+        <COL><DATA><xsl:value-of select="PARAMETER/@name" /></DATA></COL>
+        <COL><DATA><xsl:value-of select="CODE" /></DATA></COL>
+      </ROW>
+    </xsl:for-each>
+
+which of course returns the name of the first parameter along with the function name and code.
+
+I want a list of all the parameters for the function in a text string.  Return separated is best, but as long as all the names are in the string I can parse it later on.
+
+I could normalise the parameter records out in the target database - but I'm not going to, I just need them for display purposes really so I don't want to put too much effort in.  This is why I'm looking for a simple text string.
+
+I thought there might be some way of just putting an asterisk in or something.  If not I'll create a variable and add another for-each to build a string - but it just seems like there should be a simpler way
+
+The resulting XML should look like
+
+    <ROW>
+      <COL><DATA>BarGraph</DATA></COL>
+      <COL><DATA>numList;maxValue</DATA></COL>
+      <COL><DATA>Some code</DATA></COL>
+    </ROW>
+
+Where the ';' in the second column could be a carriage return or another character that I can specify

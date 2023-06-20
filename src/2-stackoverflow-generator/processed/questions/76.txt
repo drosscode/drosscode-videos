@@ -1,0 +1,19 @@
+How do you replicate this in F#?
+
+    interface IMarker
+    {
+        // No members here
+    }
+
+    class MyClass : IMarker
+    {
+    // can contain code
+    }
+
+Update:
+The following code does define marker interface, but none of the answers so far manages to producde class that implements this marker interface (see MyClass above)
+
+    type IMarker = interface     end
+
+
+

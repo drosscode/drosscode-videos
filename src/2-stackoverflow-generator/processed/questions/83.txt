@@ -1,0 +1,47 @@
+What is the best way to generate a string of `\t`'s in C#?
+
+I am learning C# and experimenting with different ways of saying the same thing.
+
+`Tabs(uint t)` is a function that returns a `string` with `t` amount of `\t`'s
+
+For example, `Tabs(3)` returns `"\t\t\t"`
+
+Which of these three ways of implementing `Tabs(uint numTabs)` is best?
+
+Of course that depends on what "best" means.
+
+1. The LINQ version is only two lines, which is nice.  But are the calls to Repeat and Aggregate unnecessarily time/resource consuming?
+
+2. The `StringBuilder` version is very clear, but is the `StringBuilder` class somehow slower?
+
+3. The `string` version is basic, which means it is easy to understand.
+
+4. Does it not matter at all?  Are they all equal?
+
+These are all questions to help me get a better feel for C#.
+
+    private string Tabs(uint numTabs)
+    {
+        IEnumerable<string> tabs = Enumerable.Repeat("\t", (int) numTabs);
+        return (numTabs > 0) ? tabs.Aggregate((sum, next) => sum + next) : "";
+    }
+
+    private string Tabs(uint numTabs)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (uint i = 0; i < numTabs; i++)
+            sb.Append("\t");
+
+        return sb.ToString();
+    }
+
+    private string Tabs(uint numTabs)
+    {
+        string output = "";
+        for (uint i = 0; i < numTabs; i++)
+        {
+            output += '\t';
+        }
+        return output;
+    }
+

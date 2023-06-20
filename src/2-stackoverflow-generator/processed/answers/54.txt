@@ -1,0 +1,23 @@
+Looks right to me. When you debug, can you confirm the session object is being cast correctly to a data table? Does dt have rows after the cast? Is the code getting to the databind method?
+In the definition of your GridView make sure that you have your &lt;Columns&gt; defined if you have AutoGenerateColumns set to false.
+Is it necessary to register 
+
+Session[&quot;Address&quot;] variable in Global.asax file before use it ??? 
+
+and Hector,
+
+make sure your application&#39;s session sate is Enabled on web.config file. 
+Sounds to me like you need to set AutoGenerateColumns=&quot;false&quot; and then specify the columns to show in the gridview:
+
+    &lt;asp:GridView ID=&quot;AddressGridView&quot; runat=&quot;server&quot; AutoGenerateColumns=&quot;false&quot;&gt;
+    &lt;Columns&gt;
+        &lt;asp:BoundField HeaderText=&quot;Type&quot; DataField=&quot;Type&quot; /&gt;
+        &lt;asp:BoundField HeaderText=&quot;Address1&quot; DataField=&quot;Address1&quot; /&gt;
+        &lt;asp:BoundField HeaderText=&quot;Address2&quot; DataField=&quot;Address2&quot; /&gt;
+        &lt;asp:BoundField HeaderText=&quot;PostalCode&quot; DataField=&quot;PostalCode&quot; /&gt;
+        &lt;asp:BoundField HeaderText=&quot;Country&quot; DataField=&quot;Country&quot; /&gt;
+    &lt;/Columns&gt;
+    &lt;EmptyDataTemplate&gt;
+        No records were found matching your search criteria
+    &lt;/EmptyDataTemplate&gt;
+    &lt;/asp:GridView&gt;

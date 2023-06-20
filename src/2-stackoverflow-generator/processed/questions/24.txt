@@ -1,0 +1,13 @@
+I am trying to limit the text input into a UITextView in cocoa-touch. I really want to limit the amount of rows rather than the number of characters. So far I have this to count the amount of rows:
+
+    - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    	if([text isEqualToString:@"\n"]) {
+    		rows++;
+    	}
+    	NSLog(@"Rows: %i", rows);
+    	return YES;
+    }
+
+However this doesn't work if the line is automatically wrapped rather than the user pressing the return key. Is there a way to check if the text was wrapped similar to checking for "\n"?
+
+Thanks.

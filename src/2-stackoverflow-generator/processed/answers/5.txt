@@ -1,0 +1,12 @@
+I had a go @ the example listed above and am experiencing the expected behaviour you describe.
+
+What platform are you running your app on?
+
+
+Cheers,
+
+Kunal
+Currently, this only works on linux (and maybe windows)
+
+It is a problem with the way the native widgets are rendered on other platforms.  Maybe it can be fixed!
+

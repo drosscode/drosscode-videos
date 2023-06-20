@@ -1,0 +1,9 @@
+shouldn&#39;t it be in the form of a file URL?  
+
+is cvs.exe added to the path?
+
+which version of tortoise?  cvs?  there was a bug reported with that description, according to google.
+
+Reinstalling TortoiseCVS solved the problem. I had another concurrent install at the time of the first TortoiseCVS install, and that must have messed things up.
+Set a path to your NT cvs installation folder (e.g. C:\Program Files (x86)\CVSNT). Worked fine for me.
+In my case, `cvs.exe` was not found in the `CVSNT` folder. I am pretty sure that I didn&#39;t delete it. Reinstalling the TortoiseCVS fixed the issue.

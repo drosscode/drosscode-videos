@@ -1,0 +1,4 @@
+When using TortoiseCVS, as I checkout a module, dialog (see [screenshot][1]) telling me "Trouble launching CVS process", "The handle is invalid". Any idea on how this would be happening?
+
+
+  [1]: http://img.skitch.com/20090104-b2pne85gp2xn9bhcgwjfsfbkcr.png

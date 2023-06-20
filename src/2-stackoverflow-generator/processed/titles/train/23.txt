@@ -1,0 +1,1 @@
+How to use javascript onclick on a DIV tag to toggle visibility of a section that contains clickable links?

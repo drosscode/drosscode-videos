@@ -1,0 +1,30 @@
+Why can&#39;t you add the ads normally? You could create an iFrame but I don&#39;t see the need.
+Google recommends against the iframe approach, as it breaks the contextuality of their ads (due to there being no content to work with on the page calling the ad).
+EDIT: Nevermind. AdSense seems to do everything it can to prevent this from working. They really don&#39;t want you to load AdSense dynamically.
+
+I realize this question is a year old, but I&#39;ve written a library that can help with the `document.write` part of the problem (whether this is a TOS violation, I don&#39;t know) [writeCapture.js](http://github.com/iamnoah/writeCapture). It&#39;s pretty simple:
+
+    $(&#39;#ads&#39;).writeCapture().html(&#39;&lt;script src=&quot;whatever-your-adsense-code-is&quot;&gt; &lt;/script&gt;&#39;);
+
+The example uses jQuery, but you can use it standalone as well. Since it will be loading in the same page (no iframes), it should work pretty well.
+
+
+It seems like what you want to do is load up AdSense and then dynamically refresh/change the advertisements based on content delivered via AJAX.
+
+Unfortunately, this is against the AdSense Program Policies; I just posted a long answer about this here: [https://stackoverflow.com/questions/435391/refresh-a-div-that-has-a-google-ad-inside-it#441425][1]
+
+
+  [1]: https://stackoverflow.com/questions/435391/refresh-a-div-that-has-a-google-ad-inside-it#441425
+Jader, Google AdSense prevents ads from being inserted into the page using AJAX.
+Google is going to make this possible soon...
+
+
+[Adsense for Ajax][1]
+
+
+  [1]: http://code.google.com/apis/afa/
+This is an old question, but just for the record I believe http://www.retailigence.com has an API that you can use for real-time lookup of location and contextual ads.
+Just to add an update to this post, it is now tolerated by the AdSense policies. You can find the updated policy (May 2013) [here][1]
+
+
+  [1]: http://adsense.blogspot.com/2013/05/updates-to-our-modifying-ad-code-policy.html

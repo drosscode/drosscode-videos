@@ -1,0 +1,9 @@
+I am trying to get reliable information on when my C# application (Windows XP) will run out of memory. I did some research and tests on my machine and picked the most reliable **perfmon** counters:
+
+    Memory.Pages Output/sec
+    Memory.Available Bytes
+
+I use thresholds and AND operator and it works quite well, but on the client machine (also Windows XP) both counters are useless. Available memory does not drop below 1GB and pages output is constant zero. After reading some logs I still don't see any useful counter.
+<br>Counters like committed memory give correct value, but the program runs out of memory (with paging killing the performance) after crossing 50%-60% of the 5GB available.
+
+Any alternatives? I wouldn't like to be forced to try to allocate memory and catch OutOfMemory exceptions during the computations.

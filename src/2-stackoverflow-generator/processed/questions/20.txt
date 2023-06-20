@@ -1,0 +1,44 @@
+I have now seen 2 methods for determining if an argument has been passed to a JavaScript function. I'm wondering if one method is better than the other or if one is just bad to use?
+
+     function Test(argument1, argument2) {
+          if (Test.arguments.length == 1) argument2 = 'blah';
+
+          alert(argument2);
+     }
+
+     Test('test');
+
+Or
+
+     function Test(argument1, argument2) {
+          argument2 = argument2 || 'blah';
+
+          alert(argument2);
+     }
+
+     Test('test');
+
+As far as I can tell, they both result in the same thing, but I've only used the first one before in production.
+
+Another Option as mentioned by [Tom][1]:
+
+    function Test(argument1, argument2) {
+        if(argument2 === null) {
+            argument2 = 'blah';
+        }
+
+        alert(argument2);
+    }
+
+As per Juan's comment, it would be better to change Tom's suggestion to:
+
+    function Test(argument1, argument2) {
+        if(argument2 === undefined) {
+            argument2 = 'blah';
+        }
+
+        alert(argument2);
+    }
+
+
+  [1]: https://stackoverflow.com/questions/411352/how-best-to-determine-if-an-argument-is-not-sent-to-the-javascript-function#411368

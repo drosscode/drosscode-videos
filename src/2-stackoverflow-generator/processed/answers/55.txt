@@ -1,0 +1,44 @@
+The @Jon Skeet answer is right, but write by hand all possibles overload is something insane, so you can use a lib like [Curryfy][1] that do this job for you. Curryfy lib particularly exposes Curry, UnCurry and ApplyPartial extension methods, with a lot of overloads.
+
+
+  [1]: https://github.com/leandromoh/Curryfy
+Here is the method that allows to write unlimited calls of functions using `dynamic` (like Curry in js):
+```csharp
+dynamic Sum(int a)
+{
+	Console.WriteLine(a);
+	return new Func&lt;int, dynamic&gt;(b =&gt; Sum(a + b));
+}
+```
+If you call it like this `Sum(2)(3)(4)(10)` the output will be:
+```
+2
+5
+9
+19
+```
+EDIT: As noted in comments, this is partial application rather than currying. I wrote a [blog post on my understanding of the difference][1], which folks may find interesting.
+
+Well, it&#39;s not particularly different - but I&#39;d separate out the currying part from the &quot;calling DoSomething&quot; part:
+
+    public static Func&lt;TResult&gt; Apply&lt;TResult, TArg&gt; (Func&lt;TArg, TResult&gt; func, TArg arg)
+    {
+        return () =&gt; func(arg);
+    }
+
+    public static Func&lt;TResult&gt; Apply&lt;TResult, TArg1, TArg2&gt; (Func&lt;TArg1, TArg2, TResult&gt; func,
+                                                              TArg1 arg1, TArg2 arg2)
+    {
+        return () =&gt; func(arg1, arg2);
+    }
+
+    // etc
+
+Then:
+
+    DoSomething(Apply(foo, 1));
+
+That way you can reuse the currying code in other situations - including cases where you don&#39;t want to call the newly-returned delegate immediately. (You might want to curry it more later on, for example.)
+
+
+  [1]: http://codeblog.jonskeet.uk/2012/01/30/currying-vs-partial-function-application/

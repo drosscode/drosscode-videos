@@ -1,0 +1,14 @@
+What are the various parts to an email message?
+
+I'm working with these 3rd party components, and so far from what I understand are:
+
+1. emails have unique messageID's (per server I would presume)
+
+2. emails have headers
+
+3. emails have body text that can be either html or plain text.
+
+4. attachments have to be parsed using mime, and each mime part can have different types like: multipart/ applicatoin/octet-stream and filenames.
+
+
+side question, where exactly is the documentation that these 3rd party components have to adhere to?

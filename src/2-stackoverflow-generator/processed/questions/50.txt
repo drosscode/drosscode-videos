@@ -1,0 +1,18 @@
+I am attempting to port one of my hobby project to linux. Preferrably to Mono since it is written in C#. But I am looking into Python as well.
+
+One of the feature of the application is that it needs to associate with a custom protocol so the application is invoked when the user clicks links like this on the app's website:
+
+    myapp://module/action
+
+A custom protocol like [this][1], [this][2] and [this][3].
+
+How can that be done in linux/unix systems? Can I associate a system-wide handler like in Windows? or does it need to be browser-dependent?
+
+Can't find anything on Google. And I am utterly clueless at linux programming.
+
+I need some pointers. Thanks!
+
+
+  [1]: http://msdn.microsoft.com/en-us/library/aa767914.aspx
+  [2]: https://stackoverflow.com/questions/389204/how-do-i-create-my-own-url-protocol-eg-so
+  [3]: https://stackoverflow.com/questions/309690/communicating-from-website-to-desktop-application-not-vice-versa

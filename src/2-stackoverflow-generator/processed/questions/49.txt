@@ -1,0 +1,9 @@
+How do I add adsense or other ads in a asp.net ajax/ajax based application ? 
+ (ex. [ra-ajax samples page][1]) or [GWT][2]
+
+Is creating an iframe a viable solution?
+
+  [1]: http://ra-ajax.org/samples/Viewport-Calendar-Starter-Kit.aspx
+  [2]: http://gwt-ext.com/demo/
+
+As stated below, placing adsense script is easy. But the google bot wont be able to scan my ajax based page, as all of the content is javascript. There wont be contextual ads. So wont be able to monetize. It would be great for static ads. Any idea/inputs?

@@ -1,0 +1,111 @@
+xsl:apply-templates is going to be your answer. It&#39;s simple and elegant.
+
+    &lt;xsl:template match=&quot;FUNCTION/PARAMETER&quot;&gt;
+        &lt;xsl:if test=&quot;position() &gt; 1&quot;&gt;
+            &lt;xsl:text&gt;; &lt;/xsl:text&gt; &lt;!-- This is the delimiter --&gt;
+        &lt;/xsl:if&gt;
+        &lt;xsl:value-of select=&quot;@name&quot; /&gt;
+    &lt;/xsl:template&gt;
+
+Then instead of the `&lt;xsl:value-of select=&quot;PARAMETER/@name&quot; /&gt;` you make it this:
+
+    &lt;xsl:apply-templates select=&quot;PARAMETER&quot; /&gt;
+**One possible transformation that produces the required result is the following**:
+
+
+    &lt;xsl:stylesheet version=&quot;1.0&quot;
+     xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;
+     &lt;xsl:output omit-xml-declaration=&quot;yes&quot; indent=&quot;yes&quot;/&gt;
+     &lt;!--                                              --&gt;
+    	&lt;xsl:template match=&quot;/*&quot;&gt;
+    	  &lt;TABLE&gt;
+    	    &lt;xsl:apply-templates select=&quot;*&quot;/&gt;
+    	  &lt;/TABLE&gt;
+    	&lt;/xsl:template&gt;
+     &lt;!--                                              --&gt;
+    	&lt;xsl:template match=&quot;FUNCTION&quot;&gt;
+    	  &lt;ROW&gt;
+    	    &lt;COL&gt;&lt;xsl:value-of select=&quot;@name&quot;/&gt;&lt;/COL&gt;
+    	    &lt;COL&gt;&lt;xsl:apply-templates select=&quot;PARAMETER&quot;/&gt;&lt;/COL&gt;
+    	    &lt;COL&gt;&lt;xsl:apply-templates select=&quot;CODE&quot;/&gt;&lt;/COL&gt;
+    	  &lt;/ROW&gt;
+    	&lt;/xsl:template&gt;
+     &lt;!--                                              --&gt;
+	&lt;xsl:template match=&quot;PARAMETER&quot;&gt;
+	 &lt;xsl:param name=&quot;pDelim&quot; select=&quot;&#39;;&#39;&quot;/&gt;
+	 &lt;xsl:value-of select=
+	 &quot;concat(@name,
+	         substring($pDelim,
+	                   1 div not(position() = last()))
+	                   )&quot;/&gt;
+	&lt;/xsl:template&gt;
+    &lt;/xsl:stylesheet&gt;
+
+**When this transformation is applied on the original XML document**:
+
+    &lt;SEARCHRESULTS&gt;
+    	&lt;FUNCTION name=&quot;BarGraph&quot;&gt;
+    		&lt;PARAMETER name=&quot;numList&quot;&gt;&lt;/PARAMETER&gt;
+    		&lt;PARAMETER name=&quot;maxValue&quot;&gt;&lt;/PARAMETER&gt;
+    		&lt;CODE&gt;Some code&lt;/CODE&gt;
+    	&lt;/FUNCTION&gt;
+    &lt;/SEARCHRESULTS&gt;
+
+**The wanted result is produced**:
+
+    &lt;TABLE&gt;
+       &lt;ROW&gt;
+          &lt;COL&gt;BarGraph&lt;/COL&gt;
+          &lt;COL&gt;numList;maxValue&lt;/COL&gt;
+          &lt;COL&gt;Some code&lt;/COL&gt;
+       &lt;/ROW&gt;
+    &lt;/TABLE&gt;
+
+**Do note** that the **`&lt;xsl:template&gt;`** which matches **`PARAMETER`** has a parameter **`$pDelim`**, which may be used to specify what character (or string) to use as a delimiter for the list of parameter names. The default value of this delimiter is set to &quot;;&quot;.
+
+
+
+
+
+Try with a second foreach :
+
+    &lt;xsl:template match=&quot;/&quot;&gt;
+    &lt;xsl:for-each select=&quot;SEARCHRESULTS/FUNCTION&quot;&gt;
+      &lt;ROW&gt;
+        &lt;COL&gt;
+          &lt;DATA&gt;
+            &lt;xsl:value-of select=&quot;@name&quot; /&gt;
+          &lt;/DATA&gt;
+        &lt;/COL&gt;
+        &lt;COL&gt;
+          &lt;DATA&gt;
+            &lt;xsl:for-each select=&quot;PARAMETER&quot;&gt;
+              &lt;!-- separate the names by a semicolon (do not insert a semicolon the first time --&gt;
+              &lt;xsl:if test=&quot;position() &gt; 1&quot;&gt;
+                &lt;xsl:text&gt;;&lt;/xsl:text&gt;
+              &lt;/xsl:if&gt;
+              &lt;xsl:value-of select=&quot;@name&quot; /&gt;
+            &lt;/xsl:for-each&gt;
+          &lt;/DATA&gt;
+        &lt;/COL&gt;
+        &lt;COL&gt;
+          &lt;DATA&gt;
+            &lt;xsl:value-of select=&quot;CODE&quot; /&gt;
+          &lt;/DATA&gt;
+        &lt;/COL&gt;
+      &lt;/ROW&gt;
+    &lt;/xsl:for-each&gt;
+  &lt;/xsl:template&gt;
+    &lt;xsl:template match=&quot;PARAMETER&quot;&gt;
+        &lt;xsl:value-of select=&quot;@name&quot; /&gt;
+        &lt;xsl:text&gt; &lt;/xsl:text&gt;
+    &lt;/xsl:template&gt;
+
+
+Replace the current code
+
+      &lt;COL&gt;&lt;DATA&gt;&lt;xsl:value-of select=&quot;PARAMETER/@name&quot; /&gt;&lt;/DATA&gt;&lt;/COL&gt;
+
+with 
+
+      &lt;COL&gt;&lt;DATA&gt;&lt;xsl:apply-templates select=&quot;PARAMETER&quot;/&gt;&lt;/DATA&gt;&lt;/COL&gt;

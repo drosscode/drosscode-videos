@@ -1,0 +1,1 @@
+mysql: can't set max_allowed_package to anything grater than 16MB

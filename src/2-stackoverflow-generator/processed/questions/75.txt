@@ -1,0 +1,29 @@
+I'm trying to use custom container widgets in gtk.Builder definition files. As far as instantiating those widgets, it works great:
+
+    #!/usr/bin/env python
+    
+    import sys 
+    import gtk 
+    
+    class MyDialog(gtk.Dialog):
+        __gtype_name__ = "MyDialog"
+    
+    
+    if __name__ == "__main__":
+        builder = gtk.Builder()
+        builder.add_from_file("mydialog.glade")
+    
+        dialog = builder.get_object("mydialog-instance")
+        dialog.run()
+
+
+Now the question is that say I have a gtk.TreeView widget inside that dialog. I'm trying to figure out how to bind that widget to an MyDialog instance variable. 
+
+One cheap alternative I can think of is to call additional method after getting the dialog widget like so:
+
+    dialog = builder.get_object("mydialog-instance")
+    dialog.bind_widgets(builder)
+
+But that seems fairly awkward. Has anyone solved this already or has a better idea on how to go about doing it?
+
+Thanks,

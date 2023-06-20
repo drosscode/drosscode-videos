@@ -1,0 +1,55 @@
+Nit-picking point: Google doesn&#39;t disallow JOINs in their database to prevent users from running &quot;expensive&quot; queries; the database isn&#39;t relational, so the &quot;JOIN&quot; SQL verb isn&#39;t really applicable in the first place.
+
+In this way, BigTable is the same as [Amazon&#39;s SimpleDB][1] - data is denormalised and stripped of schemas so that you effectively end up with huge, efficient hash tables with arbitrary data allowed in the buckets.
+
+These hash tables are very, very easy to scale, especially compared with relational databases. For applications like GAE, extreme scalability is a higher priority than a full feature-set.
+
+
+  [1]: http://aws.amazon.com/simpledb/
+You use the `db.ReferenceProperty` to link objects, see [Google App Engine: One-to-many JOIN][1] for details and examples. 
+
+
+  [1]: http://blog.arbingersys.com/2008/04/google-app-engine-one-to-many-join.html
+It&#39;s a myth that joins slow down software, in the same way that it would be a myth to assert writing loops in application code slow down software.  
+
+*I mean, why write a loop?  That just runs the same lines of code again and again!  Wasn&#39;t once enough?  It&#39;s a tremendous waste!*
+
+The above statements are intended to be ironic.
+
+My point is that a query contains a join for a purpose: to get the right answer.  Using joins inefficiently or needlessly is of course poor design, like putting loop-invariant code inside a loop.
+
+Avoiding joins as a general policy is an example of **premature optimization**.  If your approach to writing efficient code is to come up with blanket rules like that, then avoiding joins is not going to help you.
+
+---
+
+As for Google App Engine, it does support relationships between entities, but since it isn&#39;t strictly a relational database model, the concept of a join doesn&#39;t really come up.  Instead, you can get related entities from a given reference, which is more like an ORM interface to a model, it isn&#39;t the same thing as a join in SQL.
+
+You can read more here:
+http://code.google.com/appengine/articles/modeling.html
+
+(that link was in another answer on this thread, but it got deleted)
+I think Google is ripping you of some computation-heavy mechanism so you will look for ways that&#39;ll utilize more of other kinds of resources, for example hard disks maintaining reference tables and/or counting tables instead of CPU cycles wasting for joins and aggregate calculation.
+
+And it isn&#39;t impossible, you just need to workaround it using *other* kinds of resources to aid you.
+Usually when you are talking about databases not allowing joins, you are talking about very large databases that don&#39;t necessarily fit on one server.   The recent examples being the cloud databases like [Amazon&#39;s SimpleDB][1], [Microsoft&#39;s SQL Data Services][2], and [Google&#39;s App Engine Datastore][3].  Some offer limited join capability, but the big difficulty is doing joins across &quot;[partitions][4]&quot;.  In large databases like this, you partition your data so it doesn&#39;t have to reside on the same server.  You have to decide the right way to partition it.
+
+In your example, I would store a list of organization keys in a field in the contacts table, and vice versa.  The design of these databases is different than your typical normalized database.  The tables are usually &quot;sparse tables&quot;, which basically means each record can have any number of fields which are basically name/value pairs.  Think of a products table on Amazon, and how many different fields there could be for different types of products.  Books have number of pages, but MP3s have duration.  In a sparse table, these records would be stored in the same table.
+
+
+  [1]: http://aws.amazon.com/simpledb/
+  [2]: http://www.microsoft.com/azure/data.mspx
+  [3]: http://code.google.com/appengine/docs/datastore/
+  [4]: http://en.wikipedia.org/wiki/Partition_(database)
+You can perform joins in your application instead of the DB server, by fetching results from each table separately and then combining them, but for most joins doing this will only slow you down due to the latency of making several database round-trips instead of just one.
+
+But: the honest truth is that joins are not your problem.  By the time they are, if ever, you won&#39;t even need to ask this question.  You can count the number of real life projects that get to this point on your fingers(primarily Ebay), and there&#39;s no evidence that eliminating joins entirely was the only way these projects could have been made to scale.
+The databases you mention are, at best, versioned record stores designed to store very large volumes of data across multiple servers. To call them a &#39;database&#39; would be a stretch. The do not support joins, nor ACID transactions, rollbacks, etc. You can write applications without them but will often have to do more work to provide the functionality. 
+
+For:
+    
+    contacts --&lt; contacts_organizations &gt;-- organizations
+
+You could deNormailize and store organizations in contacts and contacts in orgainizations. But you will have to enforce referential integrity in the application deal with simultaneous updated to both tables. 
+
+A better solution would be to store the data in three tables and do the &#39;joins&#39; yourself.
+

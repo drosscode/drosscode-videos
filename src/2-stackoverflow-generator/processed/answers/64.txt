@@ -1,0 +1,29 @@
+You can also try to start your eclipse with the
+
+    -Dcom.sun.management.jmxremote
+
+option.
+
+And then launch 
+
+    C:\[jdk1.6.0_0x path]\bin\jconsole.exe
+
+As said in this question about [eclipse memory][1]. You will be able to monitor a lot of runtime details, provided you are launching your eclipse with a 1.6 JVM.
+
+Try also [those settings][2] and check if your problems persist with them.
+
+
+  [1]: https://stackoverflow.com/questions/100161#101164
+  [2]: https://stackoverflow.com/questions/142357
+That&#39;s a tough and often impossible goal, I&#39;ve faced this problem several times.
+
+I generally follow the following process:
+
+1) Open the progress view and see if there is anything listed in it; in some cases, a 
+non-system job is creating the problem and it is actually named. If nothing pops up here, it may be a job tagged as system (to hide it), or something that doesn&#39;t even run as a job (even worse)
+
+2) Use the show heap under the general preferences, to try and spot if heap size jumps. By default, Eclipse runs with not enough JVM Heap Space, and once it hits its limit, it will start churning even if no plugin is at fault and get stuck.
+
+3) Create and run a debug version of the workspace and try to reproduce the problem, and at that point break the program from the other Eclipse and see what threads are active. Unfortunately, most threads are not identified with the spawning plugin which really sucks.
+
+4) Unfortunately, start wasting time on a search. 

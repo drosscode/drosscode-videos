@@ -1,0 +1,7 @@
+I've got a bunch of [unicode characters][1] from U1F000 and upwards, and I'm wondering how to represent them in Java. A Java unicode escape is on the form "\uXXXX" and the Java language specification says that "Representing supplementary characters requires two consecutive Unicode escapes". How does that apply to U1F000?
+
+    String mahjongTile = "\u0001\uf000";
+
+Does not **seem** to work (I only get two blank squares), but that may be a font-glitch, I presume.
+
+  [1]: http://www.unicode.org/charts/PDF/U1F000.pdf 

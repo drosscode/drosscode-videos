@@ -1,0 +1,45 @@
+You won&#39;t want to send the HTTP headers for 100 orderlines. You neither want to generate any more requests than necessary.
+
+Send the whole order in one JSON object to the server, to: server/order or server/order/new.
+Return something that points to: server/order/order_id
+
+Also consider using &lt;strike&gt;CREATE&lt;/strike&gt; PUT instead of POST
+I&#39;ve actually been wrestling with this lately, and here&#39;s what I&#39;m working towards.
+
+If a POST that adds multiple resources succeeds, return a 200 OK (I was considering a 201, but the user ultimately doesn&#39;t land on a resource that was created) along with a page that displays all resources that were added, either in read-only or editable fashion. For instance, a user is able to select and POST multiple images to a gallery using a form comprising only a single file input. If the POST request succeeds in its entirety the user is presented with a set of forms for each image resource representation created that allows them to specify more details about each (name, description, etc).
+
+In the event that one or more resources fails to be created, the POST handler aborts all processing and appends each individual error message to an array. Then, a 419 Conflict is returned and the user is routed to a 419 Conflict error page that presents the contents of the error array, as well as a way back to the form that was submitted.
+I guess it&#39;s better to send separate requests within [single connection][1]. Of course, your web-server should support it
+
+
+  [1]: http://www.w3.org/Protocols/rfc2616/rfc2616-sec8.html
+Although bulk operations (e.g. batch create) are essential in many systems, they are not formally addressed by the RESTful architecture style.
+
+I found that POSTing a collection as you suggested basically works, but problems arise when you need to report failures in response to such a request.  Such problems are worse when multiple failures occur for different causes or when the server doesn&#39;t support transactions.
+My suggestion to you is that if there is no performance problem, for example when the service provider is on the LAN (not WAN) or the data is relatively small, it&#39;s worth it to send 100 POST requests to the server. Keep it simple, start with separate requests and if you have a performance problem try to optimize.
+
+Your idea seems valid to me. The implementation is a matter of your preference. You can use JSON or just parameters for this (&quot;order_lines[]&quot; array) and do
+
+    POST /orders
+
+Since you are going to create more resources at once in a single action (order and its lines) it&#39;s vital to validate each and every of them and save them only if all of them pass validation, ie. you should do it in a transaction. 
+Facebook explains how to do this: https://developers.facebook.com/docs/graph-api/making-multiple-requests
+
+&gt; Simple batched requests
+&gt; 
+&gt; The batch API takes in an array of logical HTTP requests represented
+&gt; as JSON arrays - each request has a method (corresponding to HTTP
+&gt; method GET/PUT/POST/DELETE etc.), a relative_url (the portion of the
+&gt; URL after graph.facebook.com), optional headers array (corresponding
+&gt; to HTTP headers) and an optional body (for POST and PUT requests). The
+&gt; Batch API returns an array of logical HTTP responses represented as
+&gt; JSON arrays - each response has a status code, an optional headers
+&gt; array and an optional body (which is a JSON encoded string).
+I believe that another correct way to approach this would be to create another resource that represents your collection of resources.
+Example, imagine that we have an endpoint like `/api/sheep/{id}` and we can POST to `/api/sheep` to create a sheep resource.
+
+Now, if we want to support bulk creation, we should consider a new flock resource at `/api/flock` (or `/api/&lt;your-resource&gt;-collection` if you lack a better meaningful name). Remember that **resources don&#39;t need to map to your database or app models**. This is a common misconception.
+
+Resources are a higher level representation, unrelated with your data. Operating on a resource can have significant side effects, like firing an alert to a user, updating other related data, initiating a long lived process, etc. For example, we could map a file system or even the unix `ps` command as a REST API.
+
+I think it is safe to assume that operating a resource may also mean to create several other entities as a side effect.

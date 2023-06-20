@@ -1,0 +1,15 @@
+Take the method System.Windows.Forms.Control.Invoke(Delegate method)
+
+Why does this give a compile time error:
+
+    string str = "woop";
+    Invoke(() => this.Text = str);
+    // Error: Cannot convert lambda expression to type 'System.Delegate'
+    // because it is not a delegate type
+
+Yet this works fine:
+
+    string str = "woop";
+    Invoke((Action)(() => this.Text = str));
+
+When the method expects a plain Delegate?

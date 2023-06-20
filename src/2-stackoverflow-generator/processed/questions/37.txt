@@ -1,0 +1,10 @@
+I see many, many sites that have URLs for individual pages such as 
+
+http://www.mysite.com/articles/this-is-article-1
+http://www.mysite.com/galleries/575
+
+And they don't redirect, they don't run slowly...
+
+I know how to parse URL's, that's easy enough.  But in my mind, that seems slow and cumbersome on a dynamic site.  As well, if the pages are all staticly built (hende the custom URL) then that means all components of the page are static as well... (which would be bad)
+
+I'd love to hear some ideas about how this is typically accomplished.

@@ -1,0 +1,100 @@
+Have you had a look at [Spec#][1]?
+
+
+  [1]: http://research.microsoft.com/en-us/projects/specsharp/
+You could write your own annotation (Java) or attribute (C#) to indicate that the return value might be null. Nothing will automatically check it (although .NET 4.0 will have [code contracts][1] for this sort of thing) but it would at least act as documentation.
+
+
+  [1]: http://research.microsoft.com/en-us/projects/contracts/
+You can use the [`Option`][1] type, which is very much like a list that has zero or one element. A return type of `Option&lt;Object&gt;` indicates that the method may return an `Object`, or it may return a special value of type `None`. This type is a replacement for the use of null with better type checks.
+
+Example:
+
+    public Option&lt;Integer&gt; parseInt(String s) {
+       try {
+          return Option.some(Integer.parseInt(s));
+       }
+       catch (Exception e) {
+          return Option.none();
+       }
+    }
+
+If you use this consistently, you can turn on IDE null-warnings, or just use grep for `null` which should not appear in your code at all if you use `Option.none()` everywhere you would normaly use a `null` literal.
+
+`Option` comes standard with Scala, and it is called `Maybe` in Haskell. The link above is to a library called [Functional Java][2] that includes it. That version implements the `Iterable` interface, and has monadic methods that let you compose things nicely. For example, to provide a default value of 0 in case of `None`:
+
+    int x = optionalInt.orSome(0);
+
+And you can replace this...
+
+    if (myString != null &amp;&amp; !&quot;&quot;.equals(myString))
+
+...with this, if you have an `Option&lt;String&gt;`...
+
+    for (String s : myOptionString)
+
+  [1]: http://functionaljava.googlecode.com/svn/artifacts/2.17/javadoc/fj/data/Option.html
+  [2]: http://functionaljava.org
+If you&#39;re using Java 5+, you can use a custom Annotation, e.g. @MayReturnNull
+
+**UPDATE**
+
+All coding philosophy aside (returning null, using exceptions, assertions, yada yada), I hope the above answers your question. Apart from primitives having default values, complex types may or may not be null, and your code needs to deal with it.
+There&#39;s some support for a [@Nullable and @NotNull annotation in IntelliJ IDEA][1]. There&#39;s also some talk about adding those annotations (or a similar feature) to Java 7. Unfortunately I don&#39;t know how far that got or if it&#39;s still on track at all.
+
+
+  [1]: http://www.jetbrains.com/idea/documentation/howto.html
+A very good follow up question.  I consider `null` a truly special value, and if a method may return `null` it must clearly document in the Javadoc when it does (`@return some value ..., or null if ...`).  When coding I&#39;m defensive, and assume a method may return `null` unless I&#39;m convinced it can&#39;t (e.g., because the Javadoc said so.)
+
+People realized that this is an issue, and a proposed solution is to use annotations to state the intention in a way it can be checked automatically.  See [JSR 305: Annotations for Software Defect Detection][1], [JSR 308: Annotations on Java Types][2] and [JetBrain&#39;s Nullable How-To][3].
+
+Your example might look like this, and refused by the IDE, the compiler or other code analysis tools.
+
+    @NotNull
+    public Object methodWhichCannotReturnNull(int i) throws Exception
+    {
+        return null; // this would lead to a compiler error!
+    }
+
+  [1]: http://jcp.org/en/jsr/detail?id=305
+  [2]: http://jcp.org/en/jsr/detail?id=308
+  [3]: http://www.jetbrains.com/idea/documentation/howto.html
+
+Indeed: in our framework we have a &#39;non-null&#39; pointer type, which may be returned to indicate that the method will always return a value.
+
+I see three options:
+
+1. wait for language support to express it (e.g. the [C# ?!][1] thing)
+2. use Aspect Orientation to build your own language extensions to express it
+3. use a custom type to express it
+4. (but builds on developer cooperation) use a naming scheme to indicate it
+
+
+
+  [1]: https://stackoverflow.com/questions/411447/how-to-show-if-a-method-may-return-null#411465
+Generally speaking, I would assume that a null return value is against the contract of the API by default. It is almost always possible to design your code such that a null value is never returned from your APIs during &quot;normal&quot; flow of execution. (For example, check foo.contains(obj) rather then calling foo.get(obj) and having a separate branch for null. Or, use the [Null object pattern][1].
+
+If you cannot design your API in such a way, I would clearly document when and why a null could be thrown--at **least** in the Javadoc, and possibly also using a custom @annotation such as several of the other answers have suggested.
+
+
+  [1]: http://en.wikipedia.org/wiki/Null_Object_pattern
+Maybe you could define a generic class named &quot;NotNull&quot;, so that your method might be like:
+
+    public NotNull&lt;Object&gt; methodWhichCannotReturnNull(int i) throws Exception
+    {
+       // the following would lead to a run-time error thown by the
+       // NotNull constructor, if it&#39;s constructed with a null value
+       return new NotNull&lt;Object&gt;(null);
+    }
+
+This is still a run-time (not a compile-time) check, but:
+
+ - It&#39;s thrown in the implementation of the method (it&#39;s not a fault in the calling code)
+ - It&#39;s self-documenting (the caller knows he&#39;s geting `NotNull&lt;T&gt;` as a return type)
+For Java, one can use the Javadoc description of a method to document the meaning of the returned value, including whether it can be null. As has been mentioned, annotations may also provide assistance here.
+
+On the other hand, I admit that I don&#39;t see null as something to be feared. There are situations in which &quot;nobody&#39;s home&quot; is a meaningful condition (although the Null Object technique also has real value here).
+
+It is certainly true that attempting a method invocation on a null value will cause an exception. But so will attempting to divide by zero. That doesn&#39;t mean that we need to go on a campaign to eliminate zeroes! It just means that we need to understand the contract on a method and do the right thing with the values that it returns.
+
+At all costs, avoid relying on the JavaDocs. People only read them if the signature doesn&#39;t appear trivial and self-explanatory (Which is bad to begin with), and these who actually bother to read them are less likely to make a mistake with the nulls since they are currently being more careful. 

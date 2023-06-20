@@ -1,0 +1,1 @@
+Why must a lambda expression be cast when supplied as a plain Delegate parameter

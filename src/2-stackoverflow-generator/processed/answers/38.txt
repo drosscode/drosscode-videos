@@ -1,0 +1,19 @@
+Could you do this in your PrepareViewDataForAddAction method?..
+
+    if (!ViewData.ModelState.IsValid)
+        {
+            ViewData[&quot;StartDate.Hour&quot;] = &quot;Error&quot;;
+        }
+
+The other fields on the form will still populate based on the properties of the Gig object.
+I think you need to do some basic client side validation first.
+don&#39;t allow it to post to the server.
+I think the problem is that your ViewModel does not match closely enough with your View. It&#39;s really important in MVC that your ViewModel matches your View as closely as possible.
+
+In your ViewModel you&#39;re assuming an integer, but in your View you&#39;re using a TextBox to render the property, which will allow any kind of text. There&#39;s a mismatch here and the difficulties you are experiencing trying to map them is a symptom of the mismatch.
+
+I think you should either:  
+1. Change the type of the ViewModel property to string and then do validation in your controller to ensure the string entered is actually a number or:  
+2. Change the control that the View renders to a control that will only allow a number to be entered via a custom control or Javascript validation (as @Qun Wang recommends)
+
+Personally, I&#39;d recommend option 1. That way the ViewModel is not dependent on the View implementation.

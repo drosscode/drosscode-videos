@@ -1,0 +1,1 @@
+RubyOnRails 2.2 + Jquery UI Sortable & AJAX: This is how I did it. Is there a better way?

@@ -1,0 +1,197 @@
+I think these two languages (as well as their runtime systems) are too different to list all differences. Some really big ones that come to my head:
+
+  - Java is compiled to bytecode, PHP is interpreted (as Alan Storm pointed out, since PHP 4, it’s not, but it still behaves as if it was);
+  - Java is strong and statically typed, while PHP is rather weakly and dynamically typed;
+  - PHP is mostly used to dynamically generate Web pages. Java can do that too, but can do anything else as well (like Applets, mobile phone software, Enterprise stuff, desktop applications with and without GUI, 3d games, Google Web Toolkit...); and
+  - *add your favourite difference here*
+
+You will notice most differences when it’s time to, but what’s most important:
+
+  - PHP offers OOP (object-oriented programming) as an option that is ignored in most projects. Java requires you to program the OOP way, but when learning Java with a background in a not-so-OOP-language, it’s really easy to mess things up and use OOP the wrong way (or you might call it the sub-optimum way or the inefficient way...).
+Not an exhaustive list, and I&#39;m PHP developer who did a tour of Java a while back so Caveat Emptor.
+
+Every variable in Java needs to be prepended with a data type.  This includes primitive types such as boolean, int, double and char, as well as Object data-types, such as ArrayList, String, and your own objects
+
+    int  foo    = 36;
+    char bar    = &#39;b&#39;;
+    double baz  = 3.14;
+    String speech = &quot;We hold these truths ...&quot;;
+    MyWidget widget = new MyWidget(foo,bar,baz,speech);
+    
+--- 
+Every variable can only hold a value of its type.  Using the above declarations, the following is not valid
+
+    foo = baz
+
+---    
+Equality on objects (not on primitive types) checks for object identity.  So the following un-intuitively prints false.  Strings have an equality method to handle this.
+
+    //see comments for more information on what happens 
+    //if you use this syntax to declare your strings
+    //String v1 = &quot;foo&quot;;
+    //String v2 = &quot;foo&quot;;
+     
+    String v1 = new String(&quot;foo&quot;);
+    String v2 = new String(&quot;foo&quot;);
+
+    if(v1 == v2){
+        println(&quot;True&quot;);
+    }
+    else{
+        println(&quot;False&quot;);
+    }
+
+---    
+Arrays are your classic C arrays.  Can only hold variables of one particular type, need to be created with a fixed length
+
+---
+To get around this, there&#39;s a series of collection Objects, one of which is named ArrayList that will act more like PHP arrays (although the holds one type business is still true).  You don&#39;t get the array like syntax, all manipulation is done through methods 
+
+    //creates an array list of strings
+    ArrayList&lt;String&gt; myArr = new ArrayList&lt;String&gt;();
+	myArr.add(&quot;My First Item&quot;);	
+
+ArrayLists still have numeric keys.  There&#39;s another collection called HashMap that will give you a dictionary (or associative array, if you went to school in the 90s) like object.
+
+---
+ArrayLists and other collections are implemented with something called generics (the &amp;lt;String&amp;gt;).  I am not a Java programmer, so all I understand about Generics is they describe the type of thing an Object will operate on.  There is much more going on there.
+
+---
+Java has no pointers.  However, all Objects are actually references, similar to PHP 5, dissimilar to PHP 4.  I don&#39;t **think** Java has the (depreciated) PHP &amp;reference &amp;syntax. 
+
+---
+All method parameters are passed by value in Java.  However, since all Objects are actually references, you&#39;re passing the value of the reference when you pass an object. This means if you manipulate an object passed into a method, the manipulations will stick.  However, if you try something like this, you won&#39;t get the result you expect
+
+    public void swapThatWontWork(String v1, String v2)
+    {
+      String temp = var1;
+      var1 = var2;
+      var2 = temp;
+    }
+
+---
+It&#39;s as good a time as any to mention that methods need to have their return type specified, and bad things will happen if an method returns something it&#39;s not supposed to. The following method returns an int
+
+    public int fooBarBax(int v1){
+    }
+
+---
+If a method is going to throw an exception, you have to declare it as such, or the compiler won&#39;t have anything to do with it.
+
+    public int fooBarBax(int v1) throws SomeException,AnotherException{
+       ...
+    }
+
+This can get tricky if you&#39;re using objects you haven&#39;t written in your method that might throw an exception.
+
+---   
+You main code entry point in Java will be a method to a class, as opposed to PHPs main global entry point    
+
+---
+Variable names in Java do not start with a sigil ($), although I think they can if you want them to
+
+---
+Class names in Java are case sensitive.
+
+---
+Strings are not mutable in Java, so concatenation can be an expensive operation. 
+
+---
+The Java Class library provides a mechanism to implement threads.  PHP has no such mechanism.
+
+---
+PHP methods (and functions) allow you have optional parameters.  In java, you need to define a separate method for each possible list of parameters
+
+    public function inPHP($var1, $var2=&#39;foo&#39;){}
+    
+    public void function inJava($var1){
+        $var2 = &quot;foo&quot;;
+        inJava($var1,$var2);
+    }
+    public void function inJava($var1,$var2){
+    
+    }
+
+---
+PHP requires an explicit $this be used when an object calls its own methods methods.  Java (as seen in the above example) does not.  
+
+---
+Java programs tend to be built from a &quot;program runs, stays running, processes requests&quot; kind of way, where as PHP applications are built from a &quot;run, handle the request, stop running&quot; kind of way.
+  - Java is strongly-typed.  PHP isn&#39;t;
+  - PHP does a lot of implicit type conversion, which can actually be problematic and is why PHP5 has operators like `===` and `!==`.  Java&#39;s implicit type conversion is primarily limited to auto-boxing of primitive types (PHP has no primitive types).  This often comes up.
+
+Consider:
+
+    $val = &#39;a&#39;;
+    if (strpos(&#39;abcdefghij&#39;, $val)) {
+      // do stuff
+    }
+
+which is incorrect and will have the block not executed because the return index of `0` is converted to `false`.  The correct version is:
+
+    $val = &#39;a&#39;;
+    if (strpos(&#39;abcdefghij&#39;, $val) !== false) {
+      // do stuff
+    }
+
+Java conditional statements require an explicit `boolean`;
+
+  - PHP variables and arrays are all prepended by `$` and otherwise indistinguishable;
+  - The equivalent of PHP associative arrays is PHP `Maps` (eg `HashMap`).  Associative arrays are ordered on insertion order and can be used like ordinary arrays (on the values).  Theres one `Map` implementation that maintains insertion order in Java but this is the exception rather than the norm;
+  - `$arr[&#39;foo&#39;] = &#39;bar&#39;` insert or update an element in an associative array.  Java must use `Map.put()` and `Map.get()`;
+  - PHP5 has the equivalent of function pointers and anonymous functions (using `create_function()`); 5.3 introduces closures at the language level.  Java must use inner classes for both, which is somewhat more verbose. Moreover, inner classes are limited in how they can access variables from the outer scope (read [Java Closures][1] on JavaPapers), making them not as powerful as true closures.
+  - Variable declaration is optional in PHP;
+  - Use of global variables within functions requires explicit use of the `global` keyword in PHP;
+  - POST/GET parameters are, unless configured otherwise (`register_globals()`) automatically result in global variables of the same name.  They can alternatively be accessed via the `$_POST` global variable (and `$_SESSION` for session variables) whereas support for these things comes from a JEE add-on called the servlets API via objects like `HttpServletRequest` and `HttpSession`;
+  - Function declaration in PHP uses the `function` keyword whereas in Java you declare return types and parameter types;
+  - PHP function names can&#39;t normally clash whereas Java allows method overloading as long as the different method signatures aren&#39;t ambiguous;
+  - PHP has default values for function arguments.  Java doesn&#39;t.  In Java this is implemented using method overloading.
+  - PHP supports the [missing-method][2] pattern, which is confusingly called &quot;[overloading][3]&quot; in the PHP docs.
+
+Compare:
+
+    function do_stuff($name = &#39;Foo&#39;) {
+      // ...
+    }
+
+to
+
+    void doStuff() {
+      doStuff(&quot;Foo&quot;);
+    }
+    
+    void doStuff(String what) {
+      // ...
+    }
+
+  - String constants in PHP are declared using single or double quotes, much like Perl.  Double quotes will evaluate variables embedded in the text.  All Java String constants use double quotes and have no such variable evaluation;
+  - PHP object method calls use the `-&gt;` operator.  Java uses the `.` operator;
+  - Constructors in Java are named after the class name.  In PHP they are called `__construct()`;
+  - In Java objects, `this` is implicit and only used to be explicit about scope and in certain cases with inner classes.  In PHP5, `$this` is explicit;
+  - Static methods in Java can be called with either the `.` operator on an instance (although this is discouraged it is syntactically valid) but generally the class name is used instead.
+
+These two are equivalent:
+
+    float f = 9.35f;
+    String s1 = String.valueOf(f);
+    String s2 = &quot;My name is Earl&quot;.valueOf(f);
+
+but the former is preferred.  PHP uses the `::` scope resolution operator for statics;
+
+  - Method overriding and overloading is quite natural in Java but a bit of a kludge in PHP;
+  - PHP code is embedded in what is otherwise largely an HTML document, much like how JSPs work;
+  - PHP uses the `.` operator to append strings.  Java uses `+`;
+  - Java 5+ methods must use the ellipsis (`...`) to declare variable length argument lists explicitly.  All PHP functions are variable length;
+  - Variable length argument lists are treated as arrays inside method bodies.  In PHP you have to use `func_get_args()`, `func_get_arg()` and/or `func_num_args()`;
+  - and no doubt more but thats all that springs to mind for now.
+
+
+  [1]: http://javapapers.com/core-java/java-closures/
+  [2]: http://cmlubinski.info/programming-languages-web-developers/method-missing-method
+  [3]: http://php.net/__call
+- you could use [JavaDoc][1] tool to autogenerate documentation on your software. But you need to write comments in specific way.
+
+- you can&#39;t run PHP on mobile phones :)
+There are a lot of run time environments and platforms. That means you need to think in advance which libraries there could be missing or which limitations there could be (screen size, memory limits, file path delimiter &quot;/&quot; or &quot;\&quot; e.g).
+
+  [1]: http://java.sun.com/j2se/javadoc/faq/index.html
