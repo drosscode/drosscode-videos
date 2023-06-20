@@ -1,1 +1,0 @@
-How much information to log from errors?

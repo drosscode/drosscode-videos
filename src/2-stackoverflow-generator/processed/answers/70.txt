@@ -1,1 +1,0 @@
-It&#39;s not a provided control, you&#39;ll have to roll your own. This shouldn&#39;t be too hard, just use the touch methods (see UIResponder) to provide functionality to the view.

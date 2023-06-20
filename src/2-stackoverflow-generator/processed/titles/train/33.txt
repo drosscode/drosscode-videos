@@ -1,1 +1,0 @@
-How to refresh a simple binding of a Windows Forms control?

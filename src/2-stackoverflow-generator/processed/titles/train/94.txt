@@ -1,1 +1,0 @@
-NHibernate with string primary key and relationships

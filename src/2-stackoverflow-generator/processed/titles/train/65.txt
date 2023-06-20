@@ -1,1 +1,0 @@
-Downloading image with a variable URL?

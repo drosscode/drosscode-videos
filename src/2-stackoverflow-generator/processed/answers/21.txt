@@ -1,4 +1,0 @@
-ActiveRecord doesn&#39;t support composite primary keys. [Here is a library][1] that purports to add support though.
-
-
-  [1]: http://compositekeys.rubyforge.org/

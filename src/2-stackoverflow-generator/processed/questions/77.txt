@@ -1,5 +1,0 @@
-I have a parts database that I am going to be constantly querying for a quoting system.  The parts database has 1,400,000+ records in it.  The users are just going to start typing part numbers, which they expect the system to be able to find after only a few characters, so I need to be able to do a wildcard search, something like:
-
-    SELECT NeededFields FROM Parts WHERE PartNumber LIKE 'ML%'
-
-Is there any kind of optimization that I can perform to try to wring the most performance out of this type of query?  I have the PartNumber field indexed, but I'm not sure if that is the best that I can get.  I'd be willing to consider alternate indexing structures built into the database separate from SQL indexes too.  The primary key is a Guid, but I need this for replication and because of specific data structures that I use.

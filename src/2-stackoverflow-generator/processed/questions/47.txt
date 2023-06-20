@@ -1,8 +1,0 @@
-I'm working on a java SE 1.5+ swing application, in conjunction with others. I'm wondering what the best way of managing string resources is. I understand the principles behind resource bundles etc. I'd like to avoid having one property file for every class that needs a string, as this seems a bit of overkill. Especially when you have a lot of classes that may only make a single reference to a string (say in an error handler). On the other hand it makes it easier when collaborating with others as you reduce the risk of merge conflicts.
-
-It seems particularly cumbersome to have to load resource bundles, every time you need to display simple user feedback, likewise in error handlers, when many classes are involved.
-
-What is the most effective way to manage strings in a fairly large application with hundreds of classes, many of which aren't GUI related, but need to pass informative messages back up to the GUI when exceptions occur.
-
-I'm using NetBeans which generally creates a property file for each GUI class, for all text relating to buttons, labels etc.
-

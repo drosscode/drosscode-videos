@@ -1,7 +1,0 @@
-the site addres: http://www.ynet.co.il/YediothPortal/Ext/TalkBack/CdaTalkBack/1,2497,L-3650194-0-68-544-0--,00.html
-
-1. fill the form with rubbish.
-2. Hit 'Send'
-3. the form post the data to another HTML without any parsing of the data i've just added
-
-How do they do it?

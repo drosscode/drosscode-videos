@@ -1,3 +1,0 @@
-Is there an automatic way to add base classes to Linq2Sql entities?
-
-I know I can define a partial and implement that but there has to be an automated way, right?

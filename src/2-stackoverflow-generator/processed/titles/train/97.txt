@@ -1,1 +1,0 @@
-Finding clusters of mass in a matrix/bitmap

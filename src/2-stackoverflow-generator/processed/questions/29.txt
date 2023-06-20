@@ -1,8 +1,0 @@
-I am trying to render a simple chart using `SSRS`. The data is in an Excel sheet. I have set up an user DSN and created a data source in `SSRS` using `ODBC`.
-
-I am able to query the excel in `Data` tab. However while trying to preview, I get the following error:
-
-> error [hy000] [microsoft] [odbc excel driver] the connection for
-> viewing your linked Microsoft Excel worksheet was lost.
-
-Anyone knows why this is happening and how this can be solved?

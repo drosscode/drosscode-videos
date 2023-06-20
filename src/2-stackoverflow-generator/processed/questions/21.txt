@@ -1,1 +1,0 @@
-How do i use ActiveRecord on existing DB with multiple columns as primary key and no ID column? I had to write extensions/hacks on set_primary_key, update and delete methods. But im not sure if it'll work on future versions. Is there a way to make ActiveRecord work in such cases without hacks?

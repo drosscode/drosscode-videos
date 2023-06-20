@@ -1,9 +1,0 @@
-My network has a kerberos server for username/password authentication. Machines that run my application have functioning kerberos clients, so users can use kinit, etc.
-
-How do I interact with the server programatically, from my own custom applications? The preferred language for an example is C. 
-
-I want users of my application to authenticate against a kerberos server before access to certain functions. I anticipate having to ask them for their username and password - kinit may not have been called.
-
-The machines hosting the applications run OS X and Debian/Linux.
-
-I believe the answer might well involve GSSAPI. If so, are there good tutorials for this?

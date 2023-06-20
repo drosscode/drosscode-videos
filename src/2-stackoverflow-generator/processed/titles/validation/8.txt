@@ -1,1 +1,0 @@
-Why does perfmon fail to give available memory and what are the alternatives?

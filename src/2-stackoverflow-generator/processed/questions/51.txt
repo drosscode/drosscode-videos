@@ -1,1 +1,0 @@
-How do you like your CRUD programs.  Code-generated, framework-driven, or manually written?

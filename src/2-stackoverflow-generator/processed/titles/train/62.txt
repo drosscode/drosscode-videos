@@ -1,1 +1,0 @@
-DRY in ASP.NET MVC - details display vs. edit form

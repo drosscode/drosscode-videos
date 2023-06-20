@@ -1,1 +1,0 @@
-How random is System.Random in .NET 3?

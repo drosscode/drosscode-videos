@@ -1,3 +1,0 @@
-What is the shortcut in IntelliJ IDEA to move across or select individual words of a camelized word? Lets say I have aLongMultiWordVariableName, I want to be able to move the cursor to each word for editing or select parts of the variable.
-
-Eclipse has a shortcut to do this <kbd>Ctrl</kbd>+<kbd>&larr;</kbd>/<kbd>&rarr;</kbd> for move and <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&larr;</kbd>/<kbd>&rarr;</kbd> for selection.

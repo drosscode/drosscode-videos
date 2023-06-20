@@ -1,1 +1,0 @@
-I'm talking about the "slide to unlock" button on iPhone. Any ideas how to go about implementing one in my own iPhone app? I don't see it as a control in IB, or maybe I just missed it?

@@ -1,5 +1,0 @@
-I am currently writing a simple password generator (C#). For that I need some random numbers.
-
-Is it OK to simply use the [Random][1] class that ships with .NET or are there any known problems with that? 
-
-  [1]: http://msdn.microsoft.com/en-us/library/system.random.aspx

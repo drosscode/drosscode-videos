@@ -1,1 +1,0 @@
-I am presently working on converting a 32-bit application into a 64-bit application in C. This application is currently working on x86 architecture (Windows, osx, Unix, Linux). So, before starting coding, I wanted to know what do I need to consider while converting the application.

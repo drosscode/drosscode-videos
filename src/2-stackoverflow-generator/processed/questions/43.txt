@@ -1,4 +1,0 @@
-When I implement objects that I want to compare using the [`IEquatable<T>` interface](https://learn.microsoft.com/en-us/dotnet/api/system.iequatable-1?view=netstandard-2.0):
-
- 1. Why do I have to override `Equals(object)` method if I already implemented `Equals(T)`?
- 2. Can I use `==` and `!=` operators once I implement `IEquatable<T>`?

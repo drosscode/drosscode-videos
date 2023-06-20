@@ -1,1 +1,0 @@
-java smtp jakarta-mail ssl

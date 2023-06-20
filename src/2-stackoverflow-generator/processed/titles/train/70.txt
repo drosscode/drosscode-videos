@@ -1,1 +1,0 @@
-iPhone app: How to implement a slider button like the builtin one

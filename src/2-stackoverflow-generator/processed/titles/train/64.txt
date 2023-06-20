@@ -1,1 +1,0 @@
-How to find out what Eclipse is doing in background?

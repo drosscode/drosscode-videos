@@ -1,1 +1,0 @@
-How do I select individual words of a camelized word in IntelliJ IDEA

@@ -1,1 +1,0 @@
-I'm playing around with ADO.NET Data Services and would like to import the output from a query into a spreadsheet.  Although Excel 2007 allows me to import the results of a request from the web page, the resulting spreadsheet contains all the XML header info which makes seeing/working with the data impossible for my users.  Can't seem to find a solution.  Any help?  Thx.

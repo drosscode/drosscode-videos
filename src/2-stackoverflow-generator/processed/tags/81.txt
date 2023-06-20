@@ -1,1 +1,0 @@
-jquery ruby-on-rails ruby ajax rjs

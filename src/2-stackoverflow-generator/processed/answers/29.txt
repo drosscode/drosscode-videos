@@ -1,3 +1,0 @@
-I would consider creating a SQL Sever Integration Services package to import the data from Excel to a SQL database and using the database as the data source for the report. The SSIS package could be scheduled to periodically refresh the data. 
-Using a file based data source like Excel is vulnerable to people modifying the structure of the spreadsheet and moving, deleting or locking the file.
-Seems to be a fleeting error. I deleted the dataset, created a new one and re-ran again. It worked.

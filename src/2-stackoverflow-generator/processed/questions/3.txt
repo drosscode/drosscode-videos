@@ -1,5 +1,0 @@
-I'm working for a company that has strict coding style guidelines but no automatic tool to validate them. I've looked around and the only tools I could find were lint like tools that seem to be aimed at verifying what the code does, and preventing bugs and not at making sure the coding style is correct.
-
-What tool should we use, if at all?
-
-NOTE: I'm looking for something for C code, although something that works for C++ would be good as well.

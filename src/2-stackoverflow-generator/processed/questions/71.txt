@@ -1,3 +1,0 @@
-Very occasionally we go throuh a software learning experience that turns our assumptions upside down, and we view software development from a whole new perspective. The most obvious one I suspect for most of us who have been around a while was the transition to hard-core OOP. What other such earthquakes have you experienced, and how would you suggest we might use your experience to question our assumptions?
-
-EDIT: Maybe some suggestions about what you learned, and how it's changed your programming?

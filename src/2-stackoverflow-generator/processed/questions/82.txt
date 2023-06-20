@@ -1,9 +1,0 @@
-In a 1-man shop or even (especially) larger shops, how in the world can you maintain a daily build?
-
-If you change the API, or database table etc. you will have to potentially change so many layers in the application, or say the sql initialization script etc etc.
-
-How can you expect the project to build for changes that take more than a day to complete?
-
-Is it a development goal to ensure the build works accross every single change?
-
-(btw, what I understand from a 'daily build' is pressing a button and having production ready code to ship...I am having a feeling I have the wrong option hehe)

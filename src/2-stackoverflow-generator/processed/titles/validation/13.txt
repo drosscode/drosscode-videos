@@ -1,1 +1,0 @@
-How should I using C# to read partition table/boot sector?

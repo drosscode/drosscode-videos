@@ -1,3 +1,0 @@
-My app uses NSTimer and it appears that NSTimer doesn't fire when the iPhone goes into the stand-by mode (either by pressing the hardware button or by the idle timer).
-
-When I activate the iPhone again, my app is still in the foreground. What happens to third party apps when the iPhone is the stand-by mode?

@@ -1,1 +1,0 @@
-authentication kerberos access-control gssapi

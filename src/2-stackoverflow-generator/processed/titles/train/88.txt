@@ -1,1 +1,0 @@
-Getting the Program Process (Service and Daemon) on Linux in C

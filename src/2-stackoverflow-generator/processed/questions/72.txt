@@ -1,3 +1,0 @@
-I did some HTTP monitoring with WireShark. Are there more tools like this that allow you to create your own HTTP messsages? Telnet comes to mind
-
-Could be handy to get see how hacker-proof your site is...

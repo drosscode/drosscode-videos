@@ -1,5 +1,0 @@
-There&#39;s nothing wrong with joining 10 tables if that&#39;s ultimately what you need to do. Generally SQL is good at this kind of thing. However, if there isn&#39;t that tight of a coupling between your 5-6 queries, then run them separately.
-
-If you choose to break up the query, hitting the DB 5-6 times is fine--absolutely nothing wrong with that. Your access method (e.g. ADO.NET) probably gives you connection pooling for free anyway so the overhead of multiple queries is very small.
-If it&#39;s possible to join everything into a single query, then in my experience it&#39;s almost always more efficient to do so; you should be doing that regardless. Follow that trail first in any case. Only consider alternatives if it&#39;s infeasible. 
-You can always execute the same series of queries in a single shot by separating them by &quot;;&quot; . 

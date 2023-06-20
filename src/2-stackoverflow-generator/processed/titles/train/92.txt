@@ -1,1 +1,0 @@
-Possible to call Oracle FUNCTION from .Net using Enterprise Library?

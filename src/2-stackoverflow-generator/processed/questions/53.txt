@@ -1,4 +1,0 @@
-I am really wondering why FogBugz when installed locally insists that [DEP][1] is turned off? 
-
-
-  [1]: http://support.microsoft.com/default.aspx/kb/875352

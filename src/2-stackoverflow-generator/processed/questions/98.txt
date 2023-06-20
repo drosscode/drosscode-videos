@@ -1,5 +1,0 @@
-Adding source files more than one directory away (e.g. ../../source.cpp or ../../../somewhere_else/source.cpp, vs. just source.cpp or ../source.cpp) to the SOURCES= declaration in a WDK/DDK build yields the following error:
-
-    Ignoring invalid directory prefix in SOURCES= entry
-
-Is it possible to include remote source files in a build?

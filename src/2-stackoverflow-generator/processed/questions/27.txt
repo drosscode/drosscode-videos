@@ -1,1 +1,0 @@
-What's the best practice for setting up a subversion repository on a linux development machine.  External users need to be able to access a specific repository, but nothing else on the machine.  I know one answer is to set up a dedicated repository, but I'm looking for a single machine solution: location of repositories, accounts, backup procedures.

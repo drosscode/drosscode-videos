@@ -1,1 +1,0 @@
-Is Postback considered as a pageview by google ads or CPM ads?

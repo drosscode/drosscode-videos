@@ -1,5 +1,0 @@
-Does anyone know a good resource or some pointers which could help me make a side scrolling tile based (descreet movement for character) with box pushing and moving platforms etc. I'm focused right now C/C++ console development (tho after this project I may stop and do stuff a little more graphical, still C/C++). Something bit like [Super Serib Bros][1]. I've taken a look at the code of SSB and I have some idea of how it works, tho the variable names aren't particularly helpful.
-
-It occurs to me someone somewhere must have thought about his problem before. So before I go re-inventing the wheel, any clues?
-
-  [1]: http://www.foon.co.uk/farcade/ssb/

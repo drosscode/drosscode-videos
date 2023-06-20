@@ -1,1 +1,0 @@
-Import from ADO.NET Data Services into Excel

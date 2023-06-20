@@ -1,1 +1,0 @@
-Way to Automatically Add a LinqToSql base class to Entities?

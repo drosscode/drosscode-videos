@@ -1,1 +1,0 @@
-How to create a series of dates in Cocoa for a week

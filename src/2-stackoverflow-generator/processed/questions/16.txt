@@ -1,7 +1,0 @@
-I've made a C# usercontrol with one textbox and one richtextbox.
-
-How can I access the properties of the richtextbox from outside the usercontrol.
-
-For example.. if i put it in a form, how can i use the Text propertie of the richtextbox???
-
-thanks
